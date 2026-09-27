@@ -1062,9 +1062,16 @@ p {
   font-size: 14px;
   color: var(--cream-80);
 }
+.footer__links {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+.footer__credit,
 .footer__top-link {
   transition: color 0.15s ease;
 }
+.footer__credit:hover,
 .footer__top-link:hover {
   color: var(--khaki);
 }
