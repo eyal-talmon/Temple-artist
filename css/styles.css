@@ -821,21 +821,12 @@ p {
   opacity: 1;
 }
 
+/* aerial + site plan: full width, stacked under the section perspective */
 .dn-pair {
   display: grid;
-  grid-template-columns: repeat(12, minmax(0, 1fr));
-  gap: 24px;
+  grid-template-columns: 1fr;
+  gap: clamp(48px, 6vw, 120px);
   margin-top: clamp(48px, 6vw, 120px);
-}
-.dn-pair .dn-figure:first-child {
-  grid-column: 1 / span 7;
-}
-.dn-pair .dn-figure:last-child {
-  grid-column: 9 / -1;
-  margin-top: clamp(64px, 10vw, 200px);  /* staggered, not boxed in */
-}
-.dn-pair .dn-media {
-  aspect-ratio: 4 / 3;
 }
 
 /* ============================================================
@@ -1738,8 +1729,7 @@ p {
 @media (max-width: 900px) {
   .inspo__lead,
   .inspo__split,
-  .experiment__body,
-  .dn-pair {
+  .experiment__body {
     grid-template-columns: 1fr;
   }
   .inspo__lead .meta,
@@ -1747,9 +1737,7 @@ p {
   .plate--tall,
   .inspo__story,
   .ex-slider,
-  .experiment__text,
-  .dn-pair .dn-figure:first-child,
-  .dn-pair .dn-figure:last-child {
+  .experiment__text {
     grid-column: 1 / -1;
   }
   .plate--tall {
@@ -1757,9 +1745,6 @@ p {
   }
   .inspo__story {
     padding-top: 32px;
-  }
-  .dn-pair .dn-figure:last-child {
-    margin-top: 24px;
   }
   .ex-slider__frame {
     aspect-ratio: 4 / 3;
@@ -1897,9 +1882,6 @@ p {
   .dn-toggle__btn svg {
     width: 15px;
     height: 15px;
-  }
-  .dn-pair .dn-media {
-    aspect-ratio: 16 / 10;
   }
   .cta-card__btn {
     width: 100%;
