@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Volunteer | The Temple 2027</title>
+  <meta name="description" content="Join the crew building The Temple 2027 at Burning Man. Veterans and first-timers welcome; construction begins in early spring 2027." />
+  <link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32.png" />
+  <link rel="icon" type="image/png" sizes="192x192" href="img/favicon-192.png" />
+  <link rel="apple-touch-icon" href="img/apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&family=Young+Serif&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css?v=9" />
+  <!-- enable scroll-reveal hidden state before paint (no flash; no-JS safe) -->
+  <script>document.documentElement.classList.add('js-reveal');</script>
+</head>
+<body>
+  <div class="page" id="top">
+
+    <!-- ================= Header ================= -->
+    <header class="site-header" id="site-header">
+      <div class="container">
+        <a class="logo" href="index.html" aria-label="The Temple 2027, home">
+          The Temple <span class="logo__year">2027</span>
+        </a>
+
+        <input type="checkbox" id="nav-check" />
+        <label class="nav-toggle" for="nav-check" aria-label="Toggle navigation">
+          <span></span><span></span><span></span>
+        </label>
+
+        <nav class="nav" aria-label="Main">
+          <a href="index.html">Home</a>
+          <a href="about.html">About</a>
+          <a href="volunteer.html" aria-current="page">Volunteer</a>
+          <a href="contact.html">Contact</a>
+          <a class="btn btn--red nav__cta" href="donate.html">Donate</a>
+        </nav>
+
+        <a class="btn btn--red header-cta" href="donate.html">Donate</a>
+      </div>
+    </header>
+
+    <main>
+      <!-- ================= Intro ================= -->
+      <section class="page-intro">
+        <div class="container">
+          <p class="index" data-reveal><span>&sect;</span> Volunteer</p>
+          <h1 class="display" data-reveal>Join the 2027 Temple&nbsp;crew.</h1>
+        </div>
+      </section>
+
+      <!-- ================= Ceiling plan ================= -->
+      <section class="vol-plan">
+        <div class="container">
+          <figure class="plate" data-reveal>
+            <img src="img/ceiling-plan.jpg" alt="Reflected ceiling plan of the Temple: a lattice of branching timber chambers radiating from the central Trunk" />
+            <figcaption class="caption">
+              <span class="caption__fig">Plan</span>
+              <span>Ceiling plan. Every branch, large and small, leads back to the Trunk.</span>
+            </figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <!-- ================= The crew ================= -->
+      <section class="section vol-crew">
+        <div class="container vol-crew__grid">
+          <div class="vol-crew__text" data-reveal>
+            <p class="index index--small"><span>i.</span> The crew</p>
+            <h2 class="title-lg">Our organizational structure is developing, while we develop the structural&nbsp;organization.</h2>
+            <p>
+              We are letting leadership emerge while we work with professional
+              structural engineers to design the Temple&rsquo;s framing.
+            </p>
+            <p>
+              The crew will be a mix of Temple veterans and Temple newcomers, so
+              there are chances both to teach and to learn, and leadership will
+              follow the same model. Construction kicks off in early spring 2027.
+            </p>
+          </div>
+
+          <figure class="vol-crew__photo" data-reveal>
+            <img src="img/volunteer-crew.jpg" alt="A Temple build crew in work boots and hard hats talking over timber frames on the playa at golden hour" loading="lazy" />
+          </figure>
+        </div>
+      </section>
+
+      <!-- ================= Form ================= -->
+      <section class="section vol-form" id="volunteer-form">
+        <div class="container vol-form__grid">
+          <header class="vol-form__head" data-reveal>
+            <p class="index"><span>01</span> Volunteer form</p>
+            <h2 class="display display--md">Raise your&nbsp;hand.</h2>
+            <p class="vol-form__lede">
+              Tell us a little about yourself. We&rsquo;ll be in touch as the build
+              schedule comes together.
+            </p>
+          </header>
+
+          <form class="form" id="volunteer-form-el"
+                data-endpoint="https://formsubmit.co/ajax/talmoney@gmail.com"
+                data-subject="New Temple 2027 volunteer"
+                data-reveal>
+            <div class="form__row">
+              <div class="field">
+                <label for="vf-name">Full name <span aria-hidden="true">*</span></label>
+                <input id="vf-name" name="name" type="text" autocomplete="name" required />
+              </div>
+              <div class="field">
+                <label for="vf-email">Email <span aria-hidden="true">*</span></label>
+                <input id="vf-email" name="email" type="email" autocomplete="email" required />
+              </div>
+            </div>
+
+            <div class="form__row">
+              <div class="field">
+                <label for="vf-phone">Phone</label>
+                <input id="vf-phone" name="phone" type="tel" autocomplete="tel" />
+              </div>
+              <div class="field">
+                <label for="vf-burns">Burns attended</label>
+                <select id="vf-burns" name="burns_attended">
+                  <option value="">Choose one</option>
+                  <option>This would be my first</option>
+                  <option>1 to 3</option>
+                  <option>4 to 9</option>
+                  <option>10 or more</option>
+                </select>
+              </div>
+            </div>
+
+            <fieldset class="field field--choices">
+              <legend>How would you like to help?</legend>
+              <div class="choices">
+                <label class="choice"><input type="checkbox" name="help" value="Build" /><span>Build</span></label>
+                <label class="choice"><input type="checkbox" name="help" value="Lighting" /><span>Lighting</span></label>
+                <label class="choice"><input type="checkbox" name="help" value="Cook" /><span>Cook</span></label>
+                <label class="choice"><input type="checkbox" name="help" value="Organize" /><span>Organize</span></label>
+                <label class="choice"><input type="checkbox" name="help" value="Document" /><span>Document</span></label>
+                <label class="choice"><input type="checkbox" name="help" value="Anything" /><span>Anything needed</span></label>
+              </div>
+            </fieldset>
+
+            <div class="field">
+              <label for="vf-message">Skills, experience, or anything we should know</label>
+              <textarea id="vf-message" name="message" rows="4"></textarea>
+            </div>
+
+            <!-- spam trap: hidden from people, bots fill it in -->
+            <input type="text" name="_honey" class="form__honey" tabindex="-1" autocomplete="off" aria-hidden="true" />
+
+            <button type="submit" class="btn btn--red form__submit">Send my details</button>
+
+            <p class="form__status" role="status" aria-live="polite"></p>
+          </form>
+        </div>
+      </section>
+    </main>
+
+    <!-- ================= Footer ================= -->
+    <footer class="site-footer" data-header="dark">
+      <div class="container">
+        <div class="footer__top">
+          <p class="footer__statement">
+            A place to leave what you carry, rising from the playa of Black Rock
+            City, Nevada, in&nbsp;2027.
+          </p>
+
+          <nav class="footer__col" aria-label="Explore">
+            <p class="footer__heading">Explore</p>
+            <a href="index.html">Home</a>
+            <a href="about.html">About</a>
+            <a href="contact.html">Contact</a>
+          </nav>
+
+          <nav class="footer__col" aria-label="Get involved">
+            <p class="footer__heading">Get involved</p>
+            <a href="volunteer.html">Volunteer</a>
+            <a href="donate.html">Donate</a>
+          </nav>
+        </div>
+
+        <p class="footer__mark" aria-hidden="true">The Temple <span>2027</span></p>
+
+        <div class="footer__bottom">
+          <p>&copy; 2026 The Temple 2027. All rights reserved.</p>
+          <a class="footer__top-link" href="#top">Back to top <span aria-hidden="true">&uarr;</span></a>
+        </div>
+      </div>
+    </footer>
+
+  </div>
+
+  <script src="js/main.js?v=9" defer></script>
+</body>
+</html>

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact | The Temple 2027</title>
+  <meta name="description" content="Get in touch with the crew behind The Temple 2027 at Burning Man." />
+  <link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32.png" />
+  <link rel="icon" type="image/png" sizes="192x192" href="img/favicon-192.png" />
+  <link rel="apple-touch-icon" href="img/apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&family=Young+Serif&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css?v=9" />
+  <!-- enable scroll-reveal hidden state before paint (no flash; no-JS safe) -->
+  <script>document.documentElement.classList.add('js-reveal');</script>
+</head>
+<body>
+  <div class="page" id="top">
+
+    <!-- ================= Header ================= -->
+    <header class="site-header" id="site-header">
+      <div class="container">
+        <a class="logo" href="index.html" aria-label="The Temple 2027, home">
+          The Temple <span class="logo__year">2027</span>
+        </a>
+
+        <input type="checkbox" id="nav-check" />
+        <label class="nav-toggle" for="nav-check" aria-label="Toggle navigation">
+          <span></span><span></span><span></span>
+        </label>
+
+        <nav class="nav" aria-label="Main">
+          <a href="index.html">Home</a>
+          <a href="about.html">About</a>
+          <a href="volunteer.html">Volunteer</a>
+          <a href="contact.html" aria-current="page">Contact</a>
+          <a class="btn btn--red nav__cta" href="donate.html">Donate</a>
+        </nav>
+
+        <a class="btn btn--red header-cta" href="donate.html">Donate</a>
+      </div>
+    </header>
+
+    <main>
+      <!-- ================= Contact form ================= -->
+      <section class="page-intro contact-page">
+        <div class="container contact-page__grid">
+          <header class="contact-page__head">
+            <p class="index" data-reveal><span>&sect;</span> Contact</p>
+            <h1 class="display" data-reveal>Say&nbsp;hello.</h1>
+            <p class="contact-page__lede" data-reveal>
+              Questions about the build, the crew, or the Temple itself? Write
+              to us and we&rsquo;ll get back to you.
+            </p>
+          </header>
+
+          <form class="form" id="contact-form-el"
+                data-endpoint="https://formsubmit.co/ajax/talmoney@gmail.com"
+                data-subject="New Temple 2027 message"
+                data-success-title="Thank you, your message is on its way."
+                data-success-text="We&rsquo;ve received it and will reply as soon as we can."
+                data-reveal>
+            <div class="form__row">
+              <div class="field">
+                <label for="cf-name">Full name <span aria-hidden="true">*</span></label>
+                <input id="cf-name" name="name" type="text" autocomplete="name" required />
+              </div>
+              <div class="field">
+                <label for="cf-email">Email <span aria-hidden="true">*</span></label>
+                <input id="cf-email" name="email" type="email" autocomplete="email" required />
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="cf-subject">Subject</label>
+              <input id="cf-subject" name="subject" type="text" />
+            </div>
+
+            <div class="field">
+              <label for="cf-message">Message <span aria-hidden="true">*</span></label>
+              <textarea id="cf-message" name="message" rows="6" required></textarea>
+            </div>
+
+            <!-- spam trap: hidden from people, bots fill it in -->
+            <input type="text" name="_honey" class="form__honey" tabindex="-1" autocomplete="off" aria-hidden="true" />
+
+            <button type="submit" class="btn btn--red form__submit">Send message</button>
+
+            <p class="form__status" role="status" aria-live="polite"></p>
+          </form>
+        </div>
+      </section>
+    </main>
+
+    <!-- ================= Footer ================= -->
+    <footer class="site-footer" data-header="dark">
+      <div class="container">
+        <div class="footer__top">
+          <p class="footer__statement">
+            A place to leave what you carry, rising from the playa of Black Rock
+            City, Nevada, in&nbsp;2027.
+          </p>
+
+          <nav class="footer__col" aria-label="Explore">
+            <p class="footer__heading">Explore</p>
+            <a href="index.html">Home</a>
+            <a href="about.html">About</a>
+            <a href="contact.html">Contact</a>
+          </nav>
+
+          <nav class="footer__col" aria-label="Get involved">
+            <p class="footer__heading">Get involved</p>
+            <a href="volunteer.html">Volunteer</a>
+            <a href="donate.html">Donate</a>
+          </nav>
+        </div>
+
+        <p class="footer__mark" aria-hidden="true">The Temple <span>2027</span></p>
+
+        <div class="footer__bottom">
+          <p>&copy; 2026 The Temple 2027. All rights reserved.</p>
+          <a class="footer__top-link" href="#top">Back to top <span aria-hidden="true">&uarr;</span></a>
+        </div>
+      </div>
+    </footer>
+
+  </div>
+
+  <script src="js/main.js?v=9" defer></script>
+</body>
+</html>
