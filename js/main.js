@@ -473,13 +473,16 @@
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     };
 
-    var spawnEmbers = function (ch) {
+    // sparks leave from the flame edge; frac = how far up the letter the
+    // burn line has climbed (0 = bottom, 1 = top)
+    var spawnEmbers = function (ch, frac, n) {
       var cr = canvas.getBoundingClientRect();
       var r = ch.getBoundingClientRect();
-      for (var i = 0; i < 16; i++) {
+      var lineY = r.bottom - cr.top - r.height * frac;
+      for (var i = 0; i < (n || 6); i++) {
         particles.push({
-          x: r.left - cr.left + Math.random() * r.width,
-          y: r.top - cr.top + r.height * (0.25 + Math.random() * 0.6),
+          x: r.left - cr.left + r.width * (0.1 + Math.random() * 0.8),
+          y: lineY + (Math.random() - 0.5) * r.height * 0.08,
           vx: (Math.random() - 0.5) * 40,
           vy: -(40 + Math.random() * 110),
           life: 0,
@@ -524,15 +527,18 @@
       // light letters in a loose left-to-right wave with some randomness
       chars.forEach(function (ch, i) {
         if (ch.classList.contains('is-burning')) return;
-        var delay = i * 55 + Math.random() * 160;
+        var delay = i * 40 + Math.random() * 110;
         later(function () {
           ch.style.animationDelay = '';
           ch.classList.remove('is-returning');
           ch.classList.add('is-burning');
-          spawnEmbers(ch);
+          // follow the burn edge up the letter (matches the 1s CSS burn)
+          [0, 0.15, 0.35, 0.55, 0.75, 0.95].forEach(function (frac, k) {
+            later(function () { spawnEmbers(ch, frac, 6); }, 60 + k * 140);
+          });
         }, delay);
       });
-      later(function () { state = 'burnt'; }, chars.length * 55 + 1200);
+      later(function () { state = 'burnt'; }, chars.length * 40 + 1200);
     };
 
     // letters grow back up from their baseline, left to right. Stagger is a
@@ -560,7 +566,7 @@
       el.addEventListener('click', function () {
         if (state !== 'idle') return;
         burn();
-        later(regrow, chars.length * 55 + 1300);
+        later(regrow, chars.length * 40 + 1300);
       });
     } else {
       el.addEventListener('mouseenter', burn);

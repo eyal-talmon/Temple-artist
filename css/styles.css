@@ -1067,23 +1067,30 @@ p {
 }
 .burn-char {
   display: inline-block;
-  will-change: transform, opacity, filter;
+  will-change: transform, opacity, filter, clip-path;
 }
 .burn-char.is-burning {
-  animation: char-burn 1.1s cubic-bezier(0.4, 0, 0.6, 1) forwards;
+  animation: char-burn 1s cubic-bezier(0.4, 0, 0.6, 1) forwards;
 }
 .burn-char.is-returning {
   animation: char-return 1.1s cubic-bezier(0.25, 0.8, 0.25, 1) both;
 }
+/* the glowing burn, eaten away from the bottom up: the clip's bottom edge
+   climbs the letter while it heats, chars, rises and fades */
 @keyframes char-burn {
-  0%   { text-shadow: none; }
-  20%  { color: #ffe3b8; text-shadow: 0 0 10px #ff9a3c, 0 0 28px #e2552a; }
+  0%   { text-shadow: none;
+         clip-path: inset(-30% -10% -20% -10%); }
+  20%  { color: #ffe3b8; text-shadow: 0 0 10px #ff9a3c, 0 0 28px #e2552a;
+         clip-path: inset(-30% -10% 5% -10%); }
   45%  { color: #e2552a; text-shadow: 0 0 18px #ff7a1a, 0 -10px 34px var(--red);
-         transform: translateY(-2px); }
+         transform: translateY(-2px);
+         clip-path: inset(-30% -10% 35% -10%); }
   70%  { color: #4a2c1c; text-shadow: 0 0 8px var(--red); opacity: 0.75;
-         transform: translateY(-8px) scale(0.98); filter: blur(1px); }
+         transform: translateY(-8px) scale(0.98); filter: blur(1px);
+         clip-path: inset(-30% -10% 65% -10%); }
   100% { color: #4a2c1c; text-shadow: none; opacity: 0;
-         transform: translateY(-28px) scale(0.94); filter: blur(7px); }
+         transform: translateY(-28px) scale(0.94); filter: blur(7px);
+         clip-path: inset(-30% -10% 100% -10%); }
 }
 /* regrow: revealed from the baseline upward, rising slightly as it grows */
 @keyframes char-return {
