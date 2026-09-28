@@ -361,6 +361,37 @@
     show(0, false);
   });
 
+  // TEMPORARY title-font preview (footer "Fonts" column): switch every serif
+  // title between Young Serif and Cormorant Garamond, remembered across
+  // pages. Remove once the font is chosen.
+  var fontOpts = document.querySelectorAll('[data-font-opt]');
+  if (fontOpts.length) {
+    var root = document.documentElement;
+    var syncFontOpts = function () {
+      var active = root.getAttribute('data-font') === 'cormorant' ? 'cormorant' : 'young';
+      fontOpts.forEach(function (b) {
+        b.setAttribute('aria-pressed', String(b.getAttribute('data-font-opt') === active));
+      });
+    };
+    fontOpts.forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var choice = btn.getAttribute('data-font-opt');
+        if (choice === 'cormorant') root.setAttribute('data-font', 'cormorant');
+        else root.removeAttribute('data-font');
+        try { localStorage.setItem('temple-title-font', choice); } catch (e) {}
+        syncFontOpts();
+        // re-fit the footer wordmark once the new face has loaded
+        var refit = function () { window.dispatchEvent(new Event('resize')); };
+        if (document.fonts && document.fonts.load) {
+          document.fonts.load('600 100px "Cormorant Garamond"').then(refit, refit);
+        } else {
+          refit();
+        }
+      });
+    });
+    syncFontOpts();
+  }
+
   // Footer wordmark: scale the font so the line spans exactly the
   // container's content width at any screen size.
   var mark = document.querySelector('.footer__mark');
