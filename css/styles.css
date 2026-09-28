@@ -30,6 +30,33 @@
   --font-serif: "Cormorant Garamond", Georgia, serif;
   --serif-weight: 600;
 }
+/* title font preview: Archivo Black (a heavy grotesque; single weight) */
+:root[data-font="archivo"] {
+  --font-serif: "Archivo Black", "Arial Black", sans-serif;
+  --serif-weight: 400;
+}
+/* Archivo Black runs ~25% wider than the serifs: scale the big titles down
+   so long lines like "Temple crew." still fit on a phone */
+:root[data-font="archivo"] .display {
+  font-size: clamp(42px, 7vw, 144px);
+}
+:root[data-font="archivo"] .display--md {
+  font-size: clamp(36px, 5.2vw, 104px);
+}
+:root[data-font="archivo"] .hero__title {
+  font-size: clamp(36px, 4.4vw, 86px);
+}
+:root[data-font="archivo"] .experiment__quote {
+  font-size: clamp(32px, 4.6vw, 92px);
+}
+:root[data-font="archivo"] .title-lg {
+  font-size: clamp(24px, 2.1vw, 40px);
+}
+/* last-resort safety for any font: a title may break a long word rather
+   than push the page sideways on a narrow screen */
+h1, h2, h3, .display, .title-lg {
+  overflow-wrap: break-word;
+}
 
 /* ---------- Reset ---------- */
 *,
@@ -998,6 +1025,11 @@ p {
 .font-opt[data-font-opt="young"] {
   font-family: "Young Serif", Georgia, serif;
   font-weight: 400;
+}
+.font-opt[data-font-opt="archivo"] {
+  font-family: "Archivo Black", "Arial Black", sans-serif;
+  font-weight: 400;
+  font-size: 17px;
 }
 .font-opt[data-font-opt="cormorant"] {
   font-family: "Cormorant Garamond", Georgia, serif;
