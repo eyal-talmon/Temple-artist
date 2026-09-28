@@ -1514,6 +1514,10 @@ p {
 .form--steps {
   gap: 28px;
 }
+/* ".form" sets display:flex, which would otherwise override [hidden] */
+.form[hidden] {
+  display: none;
+}
 .steps-progress__bar {
   height: 3px;
   background: rgba(35, 20, 12, 0.15);
