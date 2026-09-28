@@ -209,6 +209,158 @@
     });
   });
 
+  // Multi-step Google Form (volunteer sign-up): one step at a time with a
+  // progress bar, friendly inline validation, an auto-saved draft, and a
+  // direct post into the Google Form's formResponse endpoint.
+  document.querySelectorAll('form[data-gform]').forEach(function (form) {
+    var steps = Array.prototype.slice.call(form.querySelectorAll('.step'));
+    var bar = form.querySelector('.steps-progress__bar span');
+    var labels = form.querySelectorAll('.steps-progress__labels li');
+    var count = form.querySelector('.steps-count');
+    var back = form.querySelector('.steps-nav__back');
+    var next = form.querySelector('.steps-nav__next');
+    var submit = form.querySelector('.steps-nav__submit');
+    var status = form.querySelector('.form__status');
+    var done = document.getElementById('volunteer-done');
+    var draftKey = form.getAttribute('data-draft-key');
+    var current = 0;
+
+    // ---- draft: keep answers if the visitor refreshes or comes back ----
+    var saveDraft = function () {
+      if (!draftKey) return;
+      var data = {};
+      Array.prototype.forEach.call(form.elements, function (el) {
+        if (!el.name) return;
+        if (el.type === 'checkbox' || el.type === 'radio') {
+          if (el.checked) (data[el.name] = data[el.name] || []).push(el.value);
+        } else {
+          data[el.name] = el.value;
+        }
+      });
+      try { localStorage.setItem(draftKey, JSON.stringify(data)); } catch (e) {}
+    };
+    var loadDraft = function () {
+      var data;
+      try { data = JSON.parse(localStorage.getItem(draftKey) || 'null'); } catch (e) { data = null; }
+      if (!data) return;
+      Array.prototype.forEach.call(form.elements, function (el) {
+        if (!el.name || !(el.name in data)) return;
+        if (el.type === 'checkbox' || el.type === 'radio') {
+          el.checked = data[el.name].indexOf(el.value) !== -1;
+        } else {
+          el.value = data[el.name];
+        }
+      });
+    };
+    var clearDraft = function () { try { localStorage.removeItem(draftKey); } catch (e) {} };
+
+    // ---- validation, per step, with plain-language messages ----
+    var setError = function (field, msg) {
+      if (!field) return;
+      field.classList.toggle('is-invalid', !!msg);
+      var err = field.querySelector('.field__error');
+      if (err) err.textContent = msg || '';
+    };
+    var validateStep = function (step) {
+      var firstBad = null;
+      step.querySelectorAll('input[required], textarea[required]').forEach(function (el) {
+        var field = el.closest('.field');
+        var msg = '';
+        if (!el.value.trim()) msg = 'Please fill this in.';
+        else if (el.type === 'email' && !el.checkValidity()) msg = 'Please enter a valid email, like name@example.com.';
+        setError(field, msg);
+        if (msg && !firstBad) firstBad = el;
+      });
+      step.querySelectorAll('[data-required-group]').forEach(function (group) {
+        var ok = group.querySelector('input:checked');
+        var isRadio = group.querySelector('input[type="radio"]');
+        setError(group, ok ? '' : (isRadio ? 'Please choose one.' : 'Please pick at least one.'));
+        if (!ok && !firstBad) firstBad = group.querySelector('input');
+      });
+      if (firstBad) firstBad.focus({ preventScroll: false });
+      return !firstBad;
+    };
+    // clear an error as soon as it's fixed
+    form.addEventListener('input', function (e) {
+      var field = e.target.closest('.field');
+      if (field && field.classList.contains('is-invalid')) {
+        var ok = field.hasAttribute('data-required-group')
+          ? !!field.querySelector('input:checked')
+          : e.target.value.trim() && (e.target.type !== 'email' || e.target.checkValidity());
+        if (ok) setError(field, '');
+      }
+      saveDraft();
+    });
+    form.addEventListener('change', saveDraft);
+
+    // ---- step navigation ----
+    var show = function (i, focus) {
+      current = i;
+      steps.forEach(function (s, n) {
+        s.hidden = n !== i;
+        s.classList.toggle('is-active', n === i);
+      });
+      labels.forEach(function (l, n) {
+        l.classList.toggle('is-current', n === i);
+        l.classList.toggle('is-done', n < i);
+      });
+      if (bar) bar.style.width = ((i + 1) / steps.length * 100) + '%';
+      if (count) count.textContent = 'Step ' + (i + 1) + ' of ' + steps.length;
+      back.hidden = i === 0;
+      next.hidden = i === steps.length - 1;
+      submit.hidden = i !== steps.length - 1;
+      if (focus) {
+        var top = form.getBoundingClientRect().top + window.scrollY - 110;
+        if (window.scrollY > top) window.scrollTo({ top: top, behavior: 'smooth' });
+        var first = steps[i].querySelector('input, textarea');
+        if (first) first.focus({ preventScroll: true });
+      }
+    };
+    next.addEventListener('click', function () {
+      if (validateStep(steps[current])) show(current + 1, true);
+    });
+    back.addEventListener('click', function () { show(current - 1, true); });
+    // Enter in a text field moves forward instead of submitting early
+    form.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' && e.target.tagName === 'INPUT' && current < steps.length - 1) {
+        e.preventDefault();
+        next.click();
+      }
+    });
+
+    // ---- submit straight into the Google Form ----
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      if (!validateStep(steps[current])) return;
+      var body = new URLSearchParams();
+      new FormData(form).forEach(function (v, k) { body.append(k, v); });
+      submit.disabled = true;
+      submit.textContent = 'Sending…';
+      status.className = 'form__status';
+      status.textContent = '';
+      // Google doesn't allow reading the reply cross-site (no-cors), so a
+      // completed request counts as sent; only a network failure is an error.
+      fetch(form.getAttribute('data-gform'), { method: 'POST', mode: 'no-cors', body: body })
+        .then(function () {
+          clearDraft();
+          form.reset();
+          form.hidden = true;
+          if (done) { done.hidden = false; done.focus(); }
+        })
+        .catch(function () {
+          status.className = 'form__status is-error';
+          status.textContent = 'We couldn’t send your sign-up. Please check your connection and try again.';
+        })
+        .then(function () {
+          submit.disabled = false;
+          submit.textContent = 'Join the crew';
+        });
+    });
+
+    loadDraft();
+    show(0, false);
+  });
+
   // Footer wordmark: scale the font so the line spans exactly the
   // container's content width at any screen size.
   var mark = document.querySelector('.footer__mark');

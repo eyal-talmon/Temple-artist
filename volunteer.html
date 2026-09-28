@@ -13,7 +13,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&family=Young+Serif&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/styles.css?v=11" />
+  <link rel="stylesheet" href="css/styles.css?v=14" />
   <!-- enable scroll-reveal hidden state before paint (no flash; no-JS safe) -->
   <script>document.documentElement.classList.add('js-reveal');</script>
 </head>
@@ -89,74 +89,170 @@
         </div>
       </section>
 
-      <!-- ================= Form ================= -->
+      <!-- ================= Volunteer form (posts to the Google Form) ================= -->
       <section class="section vol-form" id="volunteer-form">
         <div class="container vol-form__grid">
           <header class="vol-form__head" data-reveal>
-            <p class="index"><span>01</span> Volunteer form</p>
+            <p class="index"><span>01</span> Volunteer sign&#8209;up</p>
             <h2 class="display display--md">Raise your&nbsp;hand.</h2>
             <p class="vol-form__lede">
-              Tell us a little about yourself. We&rsquo;ll be in touch as the build
-              schedule comes together.
+              The Temple is built by many hands. Tell us a little about yourself
+              and how you&rsquo;d like to contribute: pre&#8209;build, on playa in
+              Black Rock City, or with our Leave No Trace efforts after the burn.
+            </p>
+            <p class="vol-form__lede vol-form__lede--small">
+              Join our volunteer community and get updates as opportunities to get
+              involved take shape. Takes about 3 minutes.
             </p>
           </header>
 
-          <form class="form" id="volunteer-form-el"
-                data-endpoint="https://formsubmit.co/ajax/talmoney@gmail.com"
-                data-subject="New Temple 2027 volunteer"
+          <!-- Answers go straight into the Google Form "Temple 2027 Volunteer Sign Up Form".
+               Field names are the Google Form entry IDs; option values must match it exactly. -->
+          <form class="form form--steps" id="volunteer-form-el" novalidate
+                data-gform="https://docs.google.com/forms/d/e/1FAIpQLSeylcc2Efoz6P3_WhL6TNp1UwU1NiybV4-uEwmkctGrknkYSA/formResponse"
+                data-draft-key="temple2027-volunteer"
                 data-reveal>
-            <div class="form__row">
-              <div class="field">
-                <label for="vf-name">Full name <span aria-hidden="true">*</span></label>
-                <input id="vf-name" name="name" type="text" autocomplete="name" required />
-              </div>
-              <div class="field">
-                <label for="vf-email">Email <span aria-hidden="true">*</span></label>
-                <input id="vf-email" name="email" type="email" autocomplete="email" required />
-              </div>
-            </div>
 
-            <div class="form__row">
-              <div class="field">
-                <label for="vf-phone">Phone</label>
-                <input id="vf-phone" name="phone" type="tel" autocomplete="tel" />
-              </div>
-              <div class="field">
-                <label for="vf-burns">Burns attended</label>
-                <select id="vf-burns" name="burns_attended">
-                  <option value="">Choose one</option>
-                  <option>This would be my first</option>
-                  <option>1 to 3</option>
-                  <option>4 to 9</option>
-                  <option>10 or more</option>
-                </select>
-              </div>
+            <!-- progress -->
+            <div class="steps-progress" aria-hidden="true">
+              <div class="steps-progress__bar"><span></span></div>
+              <ol class="steps-progress__labels">
+                <li class="is-current">About you</li>
+                <li>How you&rsquo;d help</li>
+                <li>Timing</li>
+              </ol>
             </div>
+            <p class="steps-count" aria-live="polite">Step 1 of 3</p>
 
-            <fieldset class="field field--choices">
-              <legend>How would you like to help?</legend>
-              <div class="choices">
-                <label class="choice"><input type="checkbox" name="help" value="Build" /><span>Build</span></label>
-                <label class="choice"><input type="checkbox" name="help" value="Lighting" /><span>Lighting</span></label>
-                <label class="choice"><input type="checkbox" name="help" value="Cook" /><span>Cook</span></label>
-                <label class="choice"><input type="checkbox" name="help" value="Organize" /><span>Organize</span></label>
-                <label class="choice"><input type="checkbox" name="help" value="Document" /><span>Document</span></label>
-                <label class="choice"><input type="checkbox" name="help" value="Anything" /><span>Anything needed</span></label>
+            <!-- ---------- Step 1: About you ---------- -->
+            <fieldset class="step is-active" data-step="1">
+              <legend class="step__title">About you</legend>
+
+              <div class="field">
+                <label for="vf-name">Name <span class="field__opt">(and playa name, if you have one)</span> <span class="req" aria-hidden="true">*</span></label>
+                <input id="vf-name" name="entry.1383750332" type="text" autocomplete="name" required />
+                <p class="field__error" aria-live="polite"></p>
+              </div>
+
+              <div class="form__row">
+                <div class="field">
+                  <label for="vf-email">Email <span class="req" aria-hidden="true">*</span></label>
+                  <input id="vf-email" name="emailAddress" type="email" autocomplete="email" inputmode="email" required />
+                  <p class="field__error" aria-live="polite"></p>
+                </div>
+                <div class="field">
+                  <label for="vf-phone">Phone or WhatsApp <span class="req" aria-hidden="true">*</span></label>
+                  <input id="vf-phone" name="entry.251379149" type="tel" autocomplete="tel" inputmode="tel" required />
+                  <p class="field__error" aria-live="polite"></p>
+                </div>
+              </div>
+
+              <div class="field">
+                <label for="vf-city">Where are you based? <span class="field__opt">City, state, country</span> <span class="req" aria-hidden="true">*</span></label>
+                <input id="vf-city" name="entry.1074442644" type="text" autocomplete="address-level2" placeholder="e.g. Oakland, CA, USA" required />
+                <p class="field__error" aria-live="polite"></p>
               </div>
             </fieldset>
 
-            <div class="field">
-              <label for="vf-message">Skills, experience, or anything we should know</label>
-              <textarea id="vf-message" name="message" rows="4"></textarea>
+            <!-- ---------- Step 2: How you'd help ---------- -->
+            <fieldset class="step" data-step="2" hidden>
+              <legend class="step__title">How you&rsquo;d help</legend>
+
+              <fieldset class="field field--choices" data-required-group>
+                <legend>How would you like to be involved? <span class="req" aria-hidden="true">*</span> <span class="field__opt">Pick any</span></legend>
+                <div class="choices">
+                  <label class="choice"><input type="checkbox" name="entry.1078505876" value="Communications, Marketing &amp; Digital Media" /><span>Communications, Marketing &amp; Digital Media</span></label>
+                  <label class="choice"><input type="checkbox" name="entry.1078505876" value="Fundraising &amp; Partnerships" /><span>Fundraising &amp; Partnerships</span></label>
+                  <label class="choice"><input type="checkbox" name="entry.1078505876" value="Pre-build" /><span>Pre-build</span></label>
+                  <label class="choice"><input type="checkbox" name="entry.1078505876" value="On-playa build" /><span>On-playa build</span></label>
+                  <label class="choice"><input type="checkbox" name="entry.1078505876" value="On-playa support" /><span>On-playa support</span></label>
+                  <label class="choice"><input type="checkbox" name="entry.1078505876" value="Post-burn strike / cleanup / LNT crew" /><span>Post-burn strike / cleanup / LNT crew</span></label>
+                </div>
+                <p class="field__error" aria-live="polite"></p>
+              </fieldset>
+
+              <fieldset class="field field--choices" data-required-group>
+                <legend>What kinds of work interest you? <span class="req" aria-hidden="true">*</span> <span class="field__opt">Pick any</span></legend>
+                <div class="choices">
+                  <label class="choice"><input type="checkbox" name="entry.1122245692" value="Carpentry &amp; Building (all experience levels welcomed &amp; encouraged)" /><span>Carpentry &amp; Building (all experience levels welcomed &amp; encouraged)</span></label>
+                  <label class="choice"><input type="checkbox" name="entry.1122245692" value="Lighting &amp; Electrical" /><span>Lighting &amp; Electrical</span></label>
+                  <label class="choice"><input type="checkbox" name="entry.1122245692" value="Power Systems" /><span>Power Systems</span></label>
+                  <label class="choice"><input type="checkbox" name="entry.1122245692" value="Camp &amp; Crew Infrastructure (kitchen, water, shade, structures, etc.)" /><span>Camp &amp; Crew Infrastructure (kitchen, water, shade, structures, etc.)</span></label>
+                  <label class="choice"><input type="checkbox" name="entry.1122245692" value="Photography, Video &amp; Documentation" /><span>Photography, Video &amp; Documentation</span></label>
+                  <label class="choice"><input type="checkbox" name="entry.1122245692" value="Volunteer Coordination &amp; Community Support" /><span>Volunteer Coordination &amp; Community Support</span></label>
+                  <label class="choice"><input type="checkbox" name="entry.1122245692" value="Leave No Trace" /><span>Leave No Trace</span></label>
+                  <label class="choice"><input type="checkbox" name="entry.1122245692" value="Engineering &amp; Architecture" /><span>Engineering &amp; Architecture</span></label>
+                  <label class="choice"><input type="checkbox" name="entry.1122245692" value="Project Management &amp; Organization" /><span>Project Management &amp; Organization</span></label>
+                  <label class="choice"><input type="checkbox" name="entry.1122245692" value="Website &amp; Digital" /><span>Website &amp; Digital</span></label>
+                  <label class="choice"><input type="checkbox" name="entry.1122245692" value="Other / I’m happy to help wherever I’m needed" /><span>Other / I’m happy to help wherever I’m needed</span></label>
+                </div>
+                <p class="field__error" aria-live="polite"></p>
+              </fieldset>
+
+              <div class="field">
+                <label for="vf-skills">What experience, skills or resources would you like to bring? <span class="req" aria-hidden="true">*</span></label>
+                <p class="field__hint" id="vf-skills-hint">Every kind of contribution counts. You can also tell us if there&rsquo;s something you&rsquo;d like to learn.</p>
+                <textarea id="vf-skills" name="entry.518193885" rows="4" aria-describedby="vf-skills-hint" required></textarea>
+                <p class="field__error" aria-live="polite"></p>
+              </div>
+            </fieldset>
+
+            <!-- ---------- Step 3: Timing ---------- -->
+            <fieldset class="step" data-step="3" hidden>
+              <legend class="step__title">Timing</legend>
+
+              <fieldset class="field field--choices" data-required-group>
+                <legend>When might you be available? <span class="req" aria-hidden="true">*</span> <span class="field__opt">Pick any</span></legend>
+                <div class="choices">
+                  <label class="choice"><input type="checkbox" name="entry.1566156256" value="Before the Burn, remotely" /><span>Before the Burn, remotely</span></label>
+                  <label class="choice"><input type="checkbox" name="entry.1566156256" value="Before the Burn, in the Bay Area" /><span>Before the Burn, in the Bay Area</span></label>
+                  <label class="choice"><input type="checkbox" name="entry.1566156256" value="During on-playa build" /><span>During on-playa build</span></label>
+                  <label class="choice"><input type="checkbox" name="entry.1566156256" value="During Burn week" /><span>During Burn week</span></label>
+                  <label class="choice"><input type="checkbox" name="entry.1566156256" value="During strike and cleanup" /><span>During strike and cleanup</span></label>
+                  <label class="choice"><input type="checkbox" name="entry.1566156256" value="I&#x27;m not sure yet" /><span>I&#x27;m not sure yet</span></label>
+                </div>
+                <p class="field__error" aria-live="polite"></p>
+              </fieldset>
+
+              <div class="field">
+                <label for="vf-more">Anything else you&rsquo;d like us to know? <span class="field__opt">Optional</span></label>
+                <textarea id="vf-more" name="entry.53104438" rows="3"></textarea>
+              </div>
+
+              <fieldset class="field field--choices" data-required-group>
+                <legend>May we email you about volunteer opportunities and project updates? <span class="req" aria-hidden="true">*</span></legend>
+                <div class="choices choices--toggle">
+                  <label class="choice"><input type="radio" name="entry.79605829" value="Yes" /><span>Yes</span></label>
+                  <label class="choice"><input type="radio" name="entry.79605829" value="No" /><span>No</span></label>
+                </div>
+                <p class="field__error" aria-live="polite"></p>
+              </fieldset>
+            </fieldset>
+
+            <!-- navigation -->
+            <div class="steps-nav">
+              <button type="button" class="btn btn--ghost-dark steps-nav__back" hidden>
+                <span aria-hidden="true">&larr;</span> Back
+              </button>
+              <button type="button" class="btn btn--red steps-nav__next">
+                Continue <span aria-hidden="true">&rarr;</span>
+              </button>
+              <button type="submit" class="btn btn--red steps-nav__submit form__submit" hidden>Join the crew</button>
             </div>
-
-            <!-- spam trap: hidden from people, bots fill it in -->
-            <input type="text" name="_honey" class="form__honey" tabindex="-1" autocomplete="off" aria-hidden="true" />
-
-            <button type="submit" class="btn btn--red form__submit">Send my details</button>
 
             <p class="form__status" role="status" aria-live="polite"></p>
           </form>
+
+          <!-- shown in place of the form after a successful sign-up -->
+          <div class="form-done" id="volunteer-done" hidden tabindex="-1">
+            <p class="index"><span>&#10003;</span> You&rsquo;re in</p>
+            <h3 class="form-done__title">Thank you for raising your&nbsp;hand.</h3>
+            <p class="form-done__text">
+              Your sign&#8209;up is in. We&rsquo;ll reach out as volunteer
+              opportunities take shape, with the construction kick&#8209;off planned
+              for early spring 2027.
+            </p>
+          </div>
         </div>
       </section>
     </main>
@@ -198,6 +294,6 @@
 
   </div>
 
-  <script src="js/main.js?v=11" defer></script>
+  <script src="js/main.js?v=14" defer></script>
 </body>
 </html>

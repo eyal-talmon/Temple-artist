@@ -1438,6 +1438,201 @@ p {
   word-break: break-word;
 }
 
+/* ---------- Multi-step form (volunteer sign-up) ---------- */
+.vol-form__lede--small {
+  margin-top: 16px;
+  font-size: 15px;
+}
+.form--steps {
+  gap: 28px;
+}
+.steps-progress__bar {
+  height: 3px;
+  background: rgba(35, 20, 12, 0.15);
+  border-radius: 3px;
+  overflow: hidden;
+}
+.steps-progress__bar span {
+  display: block;
+  height: 100%;
+  width: 33.34%;
+  background: var(--red);
+  border-radius: 3px;
+  transition: width 0.45s cubic-bezier(0.2, 0.6, 0.2, 1);
+}
+.steps-progress__labels {
+  display: flex;
+  justify-content: space-between;
+  list-style: none;
+  margin: 12px 0 0;
+  padding: 0;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(35, 20, 12, 0.45);
+}
+.steps-progress__labels li {
+  transition: color 0.3s ease;
+}
+.steps-progress__labels li.is-current {
+  color: var(--red);
+}
+.steps-progress__labels li.is-done {
+  color: var(--licorice);
+}
+.steps-count {
+  /* screen readers get the step count; sighted users see the bar */
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.step {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  min-width: 0;
+}
+.step[hidden] {
+  display: none;
+}
+.step.is-active {
+  animation: step-in 0.45s cubic-bezier(0.2, 0.6, 0.2, 1);
+}
+@keyframes step-in {
+  from { opacity: 0; transform: translateX(16px); }
+  to   { opacity: 1; transform: none; }
+}
+/* more specific than ".form legend" so the step heading stays a big serif */
+.form .step__title {
+  /* float takes the legend out of the fieldset's special legend layout,
+     so it becomes a normal item and the spacing below it applies */
+  float: left;
+  width: 100%;
+  padding: 0;
+  margin-bottom: clamp(12px, 1.4vw, 24px);  /* + the 32px step gap */
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: clamp(28px, 2.4vw, 40px);
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  text-transform: none;
+}
+
+/* label helpers: keep sentence case inside the uppercase labels */
+.form .field__opt {
+  margin-left: 4px;
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  text-transform: none;
+  color: var(--ink-70);
+}
+.form .req {
+  color: var(--red);
+}
+.field__hint {
+  margin-top: -2px;
+  font-size: 14px;
+  color: var(--ink-70);
+}
+.field__error {
+  min-height: 0;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--red);
+}
+.field__error:empty {
+  display: none;
+}
+.field.is-invalid input,
+.field.is-invalid textarea {
+  border-bottom-color: var(--red);
+  border-bottom-width: 2px;
+}
+.field--choices.is-invalid .choice span {
+  border-color: var(--red);
+}
+.form input::placeholder,
+.form textarea::placeholder {
+  color: rgba(35, 20, 12, 0.35);
+}
+
+/* long option labels wrap inside their pill */
+.choice span {
+  line-height: 1.35;
+}
+.choices--toggle .choice span {
+  min-width: 96px;
+  text-align: center;
+}
+
+.steps-nav {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-top: 8px;
+}
+.steps-nav [hidden] {
+  display: none;
+}
+.steps-nav .btn {
+  gap: 10px;  /* space between label and arrow */
+}
+.steps-nav__next,
+.steps-nav__submit {
+  margin-left: auto;
+  padding: 20px 40px;
+  font-size: 16px;
+}
+.btn--ghost-dark {
+  padding: 20px 28px;
+  font-size: 16px;
+  color: var(--licorice);
+  background: transparent;
+  border-color: rgba(35, 20, 12, 0.35);
+}
+.btn--ghost-dark:hover {
+  border-color: var(--licorice);
+}
+
+/* success panel that replaces the form */
+.form-done {
+  grid-column: 7 / -1;
+  padding: clamp(32px, 4vw, 56px);
+  background: rgba(255, 255, 255, 0.45);
+  border-left: 3px solid var(--red);
+  outline: none;
+  animation: step-in 0.5s cubic-bezier(0.2, 0.6, 0.2, 1);
+}
+.form-done[hidden] {
+  display: none;
+}
+.form-done .index span {
+  font-family: var(--font-sans);
+}
+.form-done__title {
+  margin: 0 0 16px;
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: clamp(30px, 3vw, 48px);
+  line-height: 1.08;
+  color: var(--red);
+  text-wrap: balance;
+}
+.form-done__text {
+  max-width: 480px;
+  font-size: 17px;
+  color: var(--ink-70);
+}
+
 /* ============================================================
    Contact
    ============================================================ */
@@ -1767,6 +1962,7 @@ p {
   .vol-crew__text,
   .vol-crew__photo,
   .vol-form__head,
+  .form-done,
   .form,
   .contact-page__head,
   .donate-why .lede-lg,
