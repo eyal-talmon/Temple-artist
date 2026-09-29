@@ -570,6 +570,12 @@ a:focus-visible {
 .hero.film-instant .hero__after {
   transition: none;
 }
+/* reduced motion: the still shows from the first paint, until the visitor
+   chooses to play the film */
+html.rm .hero:not(.user-played) .hero__after {
+  opacity: 1;
+  transition: none;
+}
 
 /* keep the headline legible over the bright final frame of the hero film */
 .hero__title,

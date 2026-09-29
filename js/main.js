@@ -223,102 +223,120 @@
     });
   });
 
-  // Hero film: play once, then stay still on the last frame. If the visitor
-  // prefers reduced motion, or the browser blocks autoplay (e.g. iOS Low
-  // Power Mode), show the last frame as a still image instead.
+  // Hero film: play once, then dissolve into the overview still. If the
+  // visitor prefers reduced motion, or the browser refuses autoplay (e.g.
+  // iPhone Low Power Mode), show the still instead and offer a Play button
+  // so the film can still be watched on request.
   var heroVideo = document.getElementById('hero-video');
   if (heroVideo) {
-    var endFrame = heroVideo.getAttribute('data-end-frame');
     var heroEl = heroVideo.closest('.hero');
     var afterImg = heroEl && heroEl.querySelector('.hero__after');
     if (afterImg) afterImg.loading = 'eager';  // ready before the film ends
-    // fade from the film into the overview still
+    var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    heroVideo.loop = false;
+    heroVideo.muted = true;  // required for autoplay
+
+    var pauseBtn = document.getElementById('hero-pause');
+    var cursor = document.getElementById('hero-cursor');
+    var finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+    var filmActive = false;  // true while the button / cursor control is useful
+
+    // label the controls; the fallback uses "Play film" so it's self-explanatory
+    var setState = function (paused, label) {
+      var text = label || (paused ? 'Play' : 'Pause');
+      if (pauseBtn) {
+        pauseBtn.setAttribute('aria-pressed', String(paused));
+        pauseBtn.setAttribute('aria-label', paused ? 'Play background video' : 'Pause background video');
+        pauseBtn.querySelector('.hero__pause-label').textContent = text;
+      }
+      if (cursor) {
+        cursor.classList.toggle('is-paused', paused);
+        cursor.querySelector('.hero-cursor__label').textContent = text;
+      }
+    };
+    var showControls = function () {
+      filmActive = true;
+      if (pauseBtn) pauseBtn.hidden = false;
+      if (heroEl && finePointer) heroEl.classList.add('cursor-on');
+    };
+    var hideControls = function () {
+      filmActive = false;
+      if (pauseBtn) pauseBtn.hidden = true;
+      if (heroEl) heroEl.classList.remove('cursor-on');
+      if (cursor) cursor.classList.remove('is-visible');
+    };
+
+    // the overview still: fade it in (end of film / fallback) or out (replay)
     var fadeToStill = function (instant) {
       if (!heroEl) return;
       heroEl.classList.toggle('film-instant', !!instant);
       heroEl.classList.add('film-done');
     };
-    var showStill = function () {
-      heroVideo.removeAttribute('autoplay');
+    // autoplay not possible: show the still and offer to play the film
+    var showStill = function (instant) {
       heroVideo.pause();
-      if (endFrame) heroVideo.poster = endFrame;
-      heroVideo.preload = 'none';
-      fadeToStill(true);
+      fadeToStill(instant);
+      showControls();
+      setState(true, 'Play film');
     };
-    heroVideo.loop = false;
-    heroVideo.muted = true;  // required for autoplay
-
-    // pause / play: a real button (keyboard, screen readers, phones) plus,
-    // for mouse users, a control that rides on the cursor over the film
-    var pauseBtn = document.getElementById('hero-pause');
-    var cursor = document.getElementById('hero-cursor');
-    var hero = heroVideo.closest('.hero');
-    var filmActive = false;  // true while there's still motion to control
-    var setState = function (paused) {
-      if (pauseBtn) {
-        pauseBtn.setAttribute('aria-pressed', String(paused));
-        pauseBtn.setAttribute('aria-label', paused ? 'Play background video' : 'Pause background video');
-        pauseBtn.querySelector('.hero__pause-label').textContent = paused ? 'Play' : 'Pause';
+    var playFilm = function () {
+      if (heroEl) {
+        heroEl.classList.add('user-played');           // lift the reduced-motion still
+        heroEl.classList.remove('film-done', 'film-instant');
       }
-      if (cursor) {
-        cursor.classList.toggle('is-paused', paused);
-        cursor.querySelector('.hero-cursor__label').textContent = paused ? 'Play' : 'Pause';
-      }
+      if (heroVideo.ended || heroVideo.currentTime >= heroVideo.duration - 0.05) heroVideo.currentTime = 0;
+      heroVideo.preload = 'auto';
+      var p = heroVideo.play();
+      setState(false);
+      if (p && p.catch) p.catch(function () { showStill(false); });
     };
     var toggleFilm = function () {
       if (!filmActive) return;
-      if (heroVideo.paused) { heroVideo.play(); setState(false); }
+      if (heroVideo.paused) playFilm();
       else { heroVideo.pause(); setState(true); }
     };
-    var endFilm = function () {
-      filmActive = false;
-      if (pauseBtn) pauseBtn.hidden = true;
-      if (hero) hero.classList.remove('cursor-on');
-      if (cursor) cursor.classList.remove('is-visible');
-    };
+
     if (pauseBtn) pauseBtn.addEventListener('click', toggleFilm);
-    heroVideo.addEventListener('playing', function () {
-      filmActive = true;
-      if (pauseBtn) pauseBtn.hidden = false;
-      if (hero && finePointer) hero.classList.add('cursor-on');
+    heroVideo.addEventListener('playing', function () { showControls(); setState(false); });
+    heroVideo.addEventListener('ended', function () {
+      heroVideo.pause();   // hold the final frame...
+      fadeToStill(false);  // ...and dissolve into the overview still
+      hideControls();      // nothing left to pause
     });
 
     // cursor control (mouse / trackpad only)
-    var finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
-    if (hero && cursor && finePointer) {
+    if (heroEl && cursor && finePointer) {
       var tx = 0, ty = 0, cx = 0, cy = 0, rafId = null;
+      var glide = reducedMotion ? 1 : 0.25;  // no glide for reduced motion
       var follow = function () {
-        cx += (tx - cx) * 0.25;  // slight glide behind the pointer
-        cy += (ty - cy) * 0.25;
+        cx += (tx - cx) * glide;
+        cy += (ty - cy) * glide;
         cursor.style.transform = 'translate3d(' + cx + 'px,' + cy + 'px,0)';
         rafId = (Math.abs(tx - cx) > 0.2 || Math.abs(ty - cy) > 0.2) ? requestAnimationFrame(follow) : null;
       };
       // over links / buttons the normal pointer returns
       var overControl = function (el) { return !!(el && el.closest('a, button')); };
-      hero.addEventListener('mousemove', function (e) {
+      heroEl.addEventListener('mousemove', function (e) {
         if (!filmActive) return;
         tx = e.clientX; ty = e.clientY;
         if (!cursor.classList.contains('is-visible')) { cx = tx; cy = ty; }
         cursor.classList.toggle('is-visible', !overControl(e.target));
         if (!rafId) rafId = requestAnimationFrame(follow);
       });
-      hero.addEventListener('mouseleave', function () {
+      heroEl.addEventListener('mouseleave', function () {
         cursor.classList.remove('is-visible');
       });
-      hero.addEventListener('click', function (e) {
+      heroEl.addEventListener('click', function (e) {
         if (overControl(e.target) || window.getSelection().toString()) return;
         toggleFilm();
       });
     }
 
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      showStill();
+    if (reducedMotion) {
+      // the still is already showing (set before paint in <head>)
+      heroVideo.preload = 'none';
+      showStill(true);
     } else {
-      heroVideo.addEventListener('ended', function () {
-        heroVideo.pause();  // hold on the final frame...
-        fadeToStill(false); // ...and dissolve into the overview still
-        endFilm();          // nothing left to pause
-      });
       // background tabs refuse autoplay: wait until the tab is visible, and
       // only fall back to the still if it's refused while being looked at
       var whenVisible = function (fn) {
@@ -335,7 +353,7 @@
         if (p && p.catch) {
           p.catch(function () {
             if (document.hidden) whenVisible(tryPlay);
-            else showStill();
+            else showStill(false);  // gentle fade rather than a jump
           });
         }
       };
