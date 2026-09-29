@@ -582,6 +582,60 @@
     });
   }
 
+  // Big titles: when a title scrolls into view, the whole sentence is
+  // revealed left to right in one continuous sweep: each word wipes in and
+  // the next starts exactly when it finishes (duration scales with word
+  // length). Only applied when the visitor allows motion.
+  // every large headline on the site
+  var titles = document.querySelectorAll('.display, .hero__title, .experiment__quote, .about-name__word');
+  var calm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (titles.length && !calm && 'IntersectionObserver' in window) {
+    var PER_CHAR = 38;   // ms of sweep per character...
+    var MAX_SWEEP = 2000; // ...but a long sentence never takes over ~2s
+    titles.forEach(function (t) {
+      var chars = t.textContent.replace(/\s+/g, '').length;
+      var perChar = Math.min(PER_CHAR, MAX_SWEEP / Math.max(chars, 1));
+      // the hero title fades up on load first, so its sweep starts later
+      var at = t.classList.contains('hero__title') ? 650 : 120;
+      // walk every text node in order (so styled parts like <em> keep their
+      // styling) and wrap each word; words stay whole, so screen readers
+      // read the sentence normally
+      var walker = document.createTreeWalker(t, NodeFilter.SHOW_TEXT);
+      var nodes = [];
+      while (walker.nextNode()) nodes.push(walker.currentNode);
+      nodes.forEach(function (node) {
+        var frag = document.createDocumentFragment();
+        // split on normal spaces only, so &nbsp;-joined words stay together
+        node.textContent.split(/([ \n\t]+)/).forEach(function (part) {
+          if (!part) return;
+          if (/^[ \n\t]+$/.test(part)) { frag.appendChild(document.createTextNode(' ')); return; }
+          var outer = document.createElement('span');
+          outer.className = 'tw';
+          var inner = document.createElement('span');
+          inner.className = 'tw__in';
+          var dur = Math.max(120, part.length * perChar);
+          inner.style.transitionDuration = dur + 'ms';
+          inner.style.transitionDelay = at + 'ms';
+          at += dur;
+          inner.textContent = part;
+          outer.appendChild(inner);
+          frag.appendChild(outer);
+        });
+        node.parentNode.replaceChild(frag, node);
+      });
+      t.classList.add('tw-ready');
+    });
+    var tio = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) {
+          e.target.classList.add('tw-in');
+          tio.unobserve(e.target);
+        }
+      });
+    }, { rootMargin: '0px 0px -12% 0px', threshold: 0.2 });
+    titles.forEach(function (t) { tio.observe(t); });
+  }
+
   // Scroll reveal: fade elements up once as they enter the viewport.
   var revealEls = document.querySelectorAll('[data-reveal]');
   if ('IntersectionObserver' in window) {

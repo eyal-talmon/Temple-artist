@@ -1928,6 +1928,26 @@ p {
 }
 
 /* ============================================================
+   Big titles: words wipe in left to right when in view (js/main.js)
+   ============================================================ */
+.tw-ready .tw {
+  display: inline-block;
+}
+/* one continuous sweep: linear timing so each word hands off to the next
+   without a pause; per-word duration and delay are set in JS */
+.tw-ready .tw__in {
+  display: inline-block;
+  /* hidden from the right edge; negative insets keep ascenders,
+     descenders and overhangs unclipped once revealed */
+  clip-path: inset(-25% 100% -35% -5%);
+  transition-property: clip-path;
+  transition-timing-function: linear;
+}
+.tw-in .tw__in {
+  clip-path: inset(-25% -10% -35% -5%);
+}
+
+/* ============================================================
    Scroll reveal (fade + slide-up on enter; one-shot)
    ============================================================ */
 .js-reveal [data-reveal] {
