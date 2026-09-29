@@ -2725,3 +2725,38 @@ a:focus-visible {
     transform: none;
   }
 }
+
+/* very narrow screens / 400% zoom (WCAG reflow at 320px): scale the big
+   titles down so word pairs kept together with &nbsp; still fit */
+@media (max-width: 400px) {
+  .display,
+  :root[data-font="archivo"] .display {
+    font-size: 40px;
+  }
+  .display--md,
+  :root[data-font="archivo"] .display--md {
+    font-size: 34px;
+  }
+  .title-lg,
+  :root[data-font="archivo"] .title-lg {
+    font-size: 24px;
+  }
+  .hero__title,
+  :root[data-font="archivo"] .hero__title {
+    font-size: 34px;
+  }
+  .experiment__quote,
+  :root[data-font="archivo"] .experiment__quote {
+    font-size: 32px;
+  }
+  .cta-card__title {
+    font-size: 28px;
+  }
+  /* Archivo Black runs wide: a notch smaller again */
+  :root[data-font="archivo"] .title-lg {
+    font-size: 21px;
+  }
+  :root[data-font="archivo"] .cta-card__title {
+    font-size: 23px;
+  }
+}

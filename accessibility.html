@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <!-- TEMPORARY: preview only. Remove this line when the real domain goes live. -->
   <meta name="robots" content="noindex, nofollow" />
-  <title>Contact | The Temple 2027</title>
-  <meta name="description" content="Get in touch with the crew behind The Temple 2027 at Burning Man." />
+  <title>Accessibility | The Temple 2027</title>
+  <meta name="description" content="Our commitment to making The Temple 2027 website usable by everyone, and how to tell us if something gets in your way." />
   <link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32.png?v=3" />
   <link rel="icon" type="image/png" sizes="192x192" href="img/favicon-192.png?v=3" />
   <link rel="apple-touch-icon" href="img/apple-touch-icon.png?v=3" />
@@ -39,7 +39,7 @@
           <a href="index.html">Home</a>
           <a href="about.html">About</a>
           <a href="volunteer.html">Volunteer</a>
-          <a href="contact.html" aria-current="page">Contact</a>
+          <a href="contact.html">Contact</a>
           <a class="btn btn--red nav__cta" href="donate.html">Donate</a>
         </nav>
 
@@ -48,52 +48,62 @@
     </header>
 
     <main id="main" tabindex="-1">
-      <!-- ================= Contact form ================= -->
-      <section class="page-intro contact-page">
-        <div class="container contact-page__grid">
-          <header class="contact-page__head">
-            <p class="index" data-reveal><span>&sect;</span> Contact</p>
-            <h1 class="display" data-reveal>Say&nbsp;hello.</h1>
-            <p class="contact-page__lede" data-reveal>
-              Questions about the build, the crew, or the Temple itself? Write
-              to us and we&rsquo;ll get back to you.
+      <!-- ================= Intro ================= -->
+      <section class="page-intro">
+        <div class="container">
+          <p class="index" data-reveal><span>&sect;</span> Accessibility</p>
+          <h1 class="display" data-reveal>Accessibility.</h1>
+          <p class="legal__updated" data-reveal>Last reviewed: September 29, 2026</p>
+        </div>
+      </section>
+
+      <!-- ================= Statement ================= -->
+      <section class="legal">
+        <div class="container legal__grid">
+          <nav class="legal__toc" aria-label="On this page">
+            <p class="legal__toc-title">On this page</p>
+            <ol>
+              <li><a href="#commitment">Our commitment</a></li>
+              <li><a href="#standard">The standard we follow</a></li>
+              <li><a href="#done">What we have done</a></li>
+              <li><a href="#limits">Known limitations</a></li>
+              <li><a href="#feedback">Tell us about a problem</a></li>
+            </ol>
+          </nav>
+
+          <div class="legal__body">
+            <p class="lede-lg">
+              The Temple is a place for everyone, and so is this website. We want
+              anyone to be able to learn about the project, volunteer, get in
+              touch or donate, whatever device or assistive technology they use.
             </p>
-          </header>
 
-          <form class="form" id="contact-form-el"
-                data-endpoint="https://formsubmit.co/ajax/talmoney@gmail.com"
-                data-subject="New Temple 2027 message"
-                data-success-title="Thank you, your message is on its way."
-                data-success-text="We&rsquo;ve received it and will reply as soon as we can."
-                data-reveal>
-            <div class="form__row">
-              <div class="field">
-                <label for="cf-name">Full name <span aria-hidden="true">*</span></label>
-                <input id="cf-name" name="name" type="text" autocomplete="name" required />
-              </div>
-              <div class="field">
-                <label for="cf-email">Email <span aria-hidden="true">*</span></label>
-                <input id="cf-email" name="email" type="email" autocomplete="email" required />
-              </div>
-            </div>
+            <h2 id="commitment"><span>01</span> Our commitment</h2>
+            <p>We design and build this site with accessibility in mind from the start, and we keep checking it as the project grows. If something doesn&rsquo;t work for you, we want to hear about it and fix it.</p>
 
-            <div class="field">
-              <label for="cf-subject">Subject</label>
-              <input id="cf-subject" name="subject" type="text" />
-            </div>
+            <h2 id="standard"><span>02</span> The standard we follow</h2>
+            <p>We aim to meet the <strong>Web Content Accessibility Guidelines (WCAG) 2.1, level AA</strong>, the widely used international standard for accessible websites.</p>
 
-            <div class="field">
-              <label for="cf-message">Message <span aria-hidden="true">*</span></label>
-              <textarea id="cf-message" name="message" rows="6" required></textarea>
-            </div>
+            <h2 id="done"><span>03</span> What we have done</h2>
+            <ul>
+              <li><strong>Keyboard:</strong> every link, button, menu and form works with a keyboard, with a visible focus outline and a &ldquo;Skip to content&rdquo; link on every page.</li>
+              <li><strong>Screen readers:</strong> pages use clear headings and landmarks, images have text descriptions, and form fields have labels and spoken error messages.</li>
+              <li><strong>Contrast:</strong> text colors are chosen to meet WCAG contrast requirements.</li>
+              <li><strong>Zoom and resizing:</strong> you can enlarge text with your browser&rsquo;s zoom up to 400% without losing content or scrolling sideways. You don&rsquo;t need a special plugin.</li>
+              <li><strong>Motion:</strong> the home page video and the image slideshow can be paused. If your device is set to reduce motion, videos and animations are replaced with still images.</li>
+              <li><strong>Sound:</strong> nothing on the site plays audio.</li>
+            </ul>
+            <p>We check the site with automated accessibility tests and manual keyboard testing.</p>
 
-            <!-- spam trap: hidden from people, bots fill it in -->
-            <input type="text" name="_honey" class="form__honey" tabindex="-1" autocomplete="off" aria-hidden="true" />
+            <h2 id="limits"><span>04</span> Known limitations</h2>
+            <ul>
+              <li>Donations are handled on a separate donation platform, which we do not control. If you have trouble donating, contact us and we will help.</li>
+              <li>If the volunteer form doesn&rsquo;t work for you, you can also sign up by sending us a message through the <a href="contact.html">contact page</a>.</li>
+            </ul>
 
-            <button type="submit" class="btn btn--red form__submit">Send message</button>
-
-            <p class="form__status" role="status" aria-live="polite"></p>
-          </form>
+            <h2 id="feedback"><span>05</span> Tell us about a problem</h2>
+            <p>If you run into a barrier on this site, or need information in a different format, please reach us through our <a href="contact.html">contact page</a>. Tell us which page you were on and what happened, and we will do our best to fix it and help you in the meantime.</p>
+          </div>
         </div>
       </section>
     </main>
