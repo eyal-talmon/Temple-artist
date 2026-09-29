@@ -67,6 +67,45 @@ h1, h2, h3, .display, .title-lg {
 
 html {
   scroll-behavior: smooth;
+  /* keep anchored / focused content clear of the fixed header */
+  scroll-padding-top: 96px;
+}
+
+/* ---------- Accessibility helpers ---------- */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+/* "Skip to content": hidden until a keyboard user tabs to it */
+.skip-link {
+  position: fixed;
+  z-index: 100;
+  top: 12px;
+  left: 12px;
+  padding: 12px 18px;
+  font-family: var(--font-sans);
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--cream);
+  background: var(--licorice);
+  border-radius: var(--radius);
+  outline: 2px solid var(--khaki);
+  outline-offset: 2px;
+  transform: translateY(-160%);
+  transition: transform 0.2s ease;
+}
+.skip-link:focus {
+  transform: none;
+}
+main:focus {
+  outline: none;
 }
 
 body {
@@ -146,9 +185,21 @@ p {
 }
 .btn:focus-visible,
 .nav a:focus-visible,
-.logo:focus-visible {
-  outline: 2px solid var(--khaki);
+.logo:focus-visible,
+a:focus-visible {
+  outline: 2px solid var(--licorice);
   outline-offset: 3px;
+}
+/* on dark areas the ring turns khaki so it stays visible */
+.hero :focus-visible,
+.site-footer :focus-visible,
+.cta-card--dark :focus-visible,
+.daynight[data-mode="night"] :focus-visible,
+.site-header:not(.is-light) :focus-visible {
+  outline-color: var(--khaki);
+}
+.cta-card--red :focus-visible {
+  outline-color: #fff;
 }
 
 .btn--red {
@@ -318,6 +369,26 @@ p {
 #nav-check {
   display: none;
 }
+@media (max-width: 900px) {
+  /* visually hidden but focusable, so keyboards can open the menu */
+  #nav-check {
+    display: block;
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: 0;
+    opacity: 0;
+    pointer-events: none;
+  }
+  #nav-check:focus-visible ~ .nav-toggle {
+    outline: 2px solid var(--khaki);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+  .site-header.is-light:not(.menu-open) #nav-check:focus-visible ~ .nav-toggle {
+    outline-color: var(--licorice);
+  }
+}
 
 /* ============================================================
    Hero (above the fold)
@@ -356,8 +427,155 @@ p {
   inset: 0;
   background:
     linear-gradient(180deg, rgba(35, 20, 12, 0.7) 0%, rgba(35, 20, 12, 0) 22%),
-    linear-gradient(90deg, rgba(35, 20, 12, 0.55) 0%, rgba(35, 20, 12, 0) 45%),
-    linear-gradient(0deg, rgba(35, 20, 12, 0.92) 0%, rgba(35, 20, 12, 0.45) 22%, rgba(35, 20, 12, 0) 45%);
+    linear-gradient(90deg, rgba(35, 20, 12, 0.65) 0%, rgba(35, 20, 12, 0) 50%),
+    linear-gradient(0deg, rgba(35, 20, 12, 0.92) 0%, rgba(35, 20, 12, 0.6) 25%, rgba(35, 20, 12, 0) 55%);
+}
+/* pause / play control for the hero film */
+.hero__pause {
+  position: absolute;
+  z-index: 2;
+  right: max(var(--pad), calc((100% - var(--maxw)) / 2));
+  bottom: 28px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px 10px 12px;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: var(--cream);
+  background: rgba(35, 20, 12, 0.55);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(244, 236, 224, 0.35);
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+.hero__pause[hidden] {
+  display: none;
+}
+.hero__pause:hover {
+  background: rgba(35, 20, 12, 0.8);
+  border-color: rgba(244, 236, 224, 0.7);
+}
+.hero__pause:focus-visible {
+  outline: 2px solid var(--khaki);
+  outline-offset: 3px;
+}
+.hero__pause-icon {
+  width: 16px;
+  height: 16px;
+  fill: currentColor;
+}
+.hero__pause-icon--play,
+.hero__pause[aria-pressed="true"] .hero__pause-icon--pause {
+  display: none;
+}
+.hero__pause[aria-pressed="true"] .hero__pause-icon--play {
+  display: block;
+}
+/* phones: the buttons fill the bottom, so sit top-right under the header */
+@media (max-width: 900px) {
+  .hero__pause {
+    top: calc(var(--header-h) + 12px);
+    bottom: auto;
+    right: var(--pad);
+  }
+}
+
+/* mouse users: the control rides on the cursor instead. The real button
+   stays in the page for keyboard/screen-reader users, visible on focus. */
+.hero-cursor {
+  display: none;
+}
+@media (hover: hover) and (pointer: fine) {
+  .hero.cursor-on {
+    cursor: none;
+  }
+  .hero.cursor-on a,
+  .hero.cursor-on button {
+    cursor: pointer;
+  }
+  .hero__pause:not(:focus-visible) {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+    border: 0;
+  }
+  .hero-cursor {
+    position: fixed;
+    z-index: 60;
+    left: 0;
+    top: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    width: 88px;
+    height: 88px;
+    margin: -44px 0 0 -44px;  /* centre on the pointer */
+    color: var(--cream);
+    background: rgba(35, 20, 12, 0.45);
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(244, 236, 224, 0.45);
+    border-radius: 50%;
+    pointer-events: none;
+    opacity: 0;
+    scale: 0.6;
+    transition: opacity 0.2s ease, scale 0.25s cubic-bezier(0.2, 0.7, 0.2, 1);
+    will-change: transform;
+  }
+  .hero-cursor.is-visible {
+    opacity: 1;
+    scale: 1;
+  }
+  .hero-cursor__icon {
+    width: 18px;
+    height: 18px;
+    fill: currentColor;
+  }
+  .hero-cursor__label {
+    font-family: var(--font-sans);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  .hero-cursor__icon--play,
+  .hero-cursor.is-paused .hero-cursor__icon--pause {
+    display: none;
+  }
+  .hero-cursor.is-paused .hero-cursor__icon--play {
+    display: block;
+  }
+}
+
+/* the still the film fades into at its end (and the no-motion fallback) */
+.hero__after {
+  opacity: 0;
+  transition: opacity 1.8s ease;
+  pointer-events: none;
+}
+.hero.film-done .hero__after {
+  opacity: 1;
+}
+.hero.film-instant .hero__after {
+  transition: none;
+}
+
+/* keep the headline legible over the bright final frame of the hero film */
+.hero__title,
+.hero__lede,
+.hero__eyebrow {
+  text-shadow: 0 2px 28px rgba(35, 20, 12, 0.6), 0 1px 3px rgba(35, 20, 12, 0.35);
 }
 
 .hero__inner {
@@ -697,6 +915,34 @@ p {
 }
 .ex-slider__label {
   flex: 1;
+}
+.ex-slider__pause {
+  display: inline-grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  color: var(--licorice);
+  background: transparent;
+  border: 1px solid rgba(35, 20, 12, 0.35);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: border-color 0.2s ease;
+}
+.ex-slider__pause:hover {
+  border-color: var(--licorice);
+}
+.ex-slider__pause-icon {
+  width: 14px;
+  height: 14px;
+  fill: currentColor;
+}
+.ex-slider__pause-icon--play,
+.ex-slider__pause[aria-pressed="true"] .ex-slider__pause-icon--pause {
+  display: none;
+}
+.ex-slider__pause[aria-pressed="true"] .ex-slider__pause-icon--play {
+  display: block;
 }
 .ex-slider__dots {
   display: flex;
@@ -1163,6 +1409,15 @@ p {
   gap: 32px;
 }
 .footer__credit,
+.footer__legal {
+  margin-left: 16px;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: color 0.15s ease;
+}
+.footer__legal:hover {
+  color: var(--khaki);
+}
 .footer__top-link {
   transition: color 0.15s ease;
 }
@@ -1654,7 +1909,7 @@ p {
   font-weight: 500;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: rgba(35, 20, 12, 0.45);
+  color: rgba(35, 20, 12, 0.72);  /* 4.5:1+ on khaki-light */
 }
 .steps-progress__labels li {
   transition: color 0.3s ease;
@@ -1746,7 +2001,7 @@ p {
 }
 .form input::placeholder,
 .form textarea::placeholder {
-  color: rgba(35, 20, 12, 0.35);
+  color: rgba(35, 20, 12, 0.62);  /* readable hint text */
 }
 
 /* long option labels wrap inside their pill */
@@ -1815,6 +2070,132 @@ p {
   max-width: 480px;
   font-size: 17px;
   color: var(--ink-70);
+}
+
+/* ============================================================
+   Privacy policy (long-form text)
+   ============================================================ */
+.legal__updated {
+  margin-top: 24px;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-70);
+}
+.legal {
+  padding-bottom: clamp(96px, 10vw, 200px);
+}
+.legal__grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 24px;
+  align-items: start;
+}
+/* table of contents stays in view beside the text */
+.legal__toc {
+  grid-column: 1 / span 3;
+  position: sticky;
+  top: calc(72px + 32px);
+  padding-top: 8px;
+  border-top: 1px solid var(--licorice);
+}
+.legal__toc-title {
+  margin: 12px 0 16px;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+.legal__toc ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  counter-reset: toc;
+}
+.legal__toc li {
+  counter-increment: toc;
+  display: flex;
+  gap: 12px;
+  font-size: 15px;
+}
+.legal__toc li::before {
+  content: counter(toc, decimal-leading-zero);
+  flex: none;
+  min-width: 22px;
+  font-family: var(--font-serif);
+  font-weight: var(--serif-weight);
+  color: var(--red);
+}
+.legal__toc a {
+  color: var(--ink-70);
+  transition: color 0.15s ease;
+}
+.legal__toc a:hover {
+  color: var(--licorice);
+}
+.legal__body {
+  grid-column: 5 / span 7;
+  max-width: 720px;
+}
+.legal__body .lede-lg {
+  margin-bottom: clamp(40px, 4vw, 64px);
+}
+/* more specific than ".legal__body p" so the intro stays large */
+.legal__body p.lede-lg {
+  font-size: clamp(20px, 1.6vw, 26px);
+  line-height: 1.45;
+  color: var(--licorice);
+}
+.legal__body h2 {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  margin: clamp(48px, 5vw, 72px) 0 16px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(35, 20, 12, 0.18);
+  font-family: var(--font-serif);
+  font-weight: var(--serif-weight);
+  font-size: clamp(24px, 2vw, 32px);
+  line-height: 1.15;
+  scroll-margin-top: 110px;
+}
+.legal__body h2 span {
+  font-size: 0.6em;
+  color: var(--red);
+}
+.legal__body p,
+.legal__body li {
+  font-size: 17px;
+  line-height: 1.65;
+  color: var(--ink-70);
+}
+.legal__body p + p,
+.legal__body p + ul,
+.legal__body ul + p {
+  margin-top: 16px;
+}
+.legal__body ul {
+  margin: 12px 0 0;
+  padding-left: 1.2em;
+}
+.legal__body li + li {
+  margin-top: 8px;
+}
+.legal__body li::marker {
+  color: var(--red);
+}
+.legal__body strong {
+  font-weight: 600;
+  color: var(--licorice);
+}
+.legal__body a {
+  color: var(--red);
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
 
 /* ============================================================
@@ -2167,6 +2548,17 @@ p {
   }
   .work__text {
     position: static;
+  }
+  .legal__grid {
+    grid-template-columns: 1fr;
+  }
+  .legal__toc {
+    position: static;
+    grid-column: 1 / -1;
+    margin-bottom: 24px;
+  }
+  .legal__body {
+    grid-column: 1 / -1;
   }
   .about-bio__grid,
   .about-name__grid,

@@ -49,6 +49,10 @@
         setMenu(false);
       });
     });
+    // checkboxes toggle on Space; let Enter open/close the menu as well
+    navCheck.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') { e.preventDefault(); setMenu(!navCheck.checked); }
+    });
     document.addEventListener('keydown', function (e) {
       if (e.key === 'Escape' && navCheck.checked) {
         setMenu(false);
@@ -94,7 +98,9 @@
     var current = 0;
     var timer = null;
     var inView = false;
+    var userPaused = false;  // the pause button (WCAG 2.2.2) overrides autoplay
     var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var pauseBtn2 = slider.querySelector('.ex-slider__pause');
 
     var show = function (i) {
       current = (i + slides.length) % slides.length;
@@ -109,9 +115,17 @@
     var stop = function () { clearInterval(timer); timer = null; };
     var start = function () {
       stop();
-      if (!inView || slides.length < 2) return;
+      if (!inView || userPaused || slides.length < 2) return;
       timer = setInterval(function () { show(current + 1); }, 6000);
     };
+    if (pauseBtn2) {
+      pauseBtn2.addEventListener('click', function () {
+        userPaused = !userPaused;
+        pauseBtn2.setAttribute('aria-pressed', String(userPaused));
+        pauseBtn2.setAttribute('aria-label', userPaused ? 'Play slideshow' : 'Pause slideshow');
+        if (userPaused) stop(); else start();
+      });
+    }
 
     dots.forEach(function (dot, n) {
       dot.addEventListener('click', function () { show(n); start(); });
@@ -209,6 +223,126 @@
     });
   });
 
+  // Hero film: play once, then stay still on the last frame. If the visitor
+  // prefers reduced motion, or the browser blocks autoplay (e.g. iOS Low
+  // Power Mode), show the last frame as a still image instead.
+  var heroVideo = document.getElementById('hero-video');
+  if (heroVideo) {
+    var endFrame = heroVideo.getAttribute('data-end-frame');
+    var heroEl = heroVideo.closest('.hero');
+    var afterImg = heroEl && heroEl.querySelector('.hero__after');
+    if (afterImg) afterImg.loading = 'eager';  // ready before the film ends
+    // fade from the film into the overview still
+    var fadeToStill = function (instant) {
+      if (!heroEl) return;
+      heroEl.classList.toggle('film-instant', !!instant);
+      heroEl.classList.add('film-done');
+    };
+    var showStill = function () {
+      heroVideo.removeAttribute('autoplay');
+      heroVideo.pause();
+      if (endFrame) heroVideo.poster = endFrame;
+      heroVideo.preload = 'none';
+      fadeToStill(true);
+    };
+    heroVideo.loop = false;
+    heroVideo.muted = true;  // required for autoplay
+
+    // pause / play: a real button (keyboard, screen readers, phones) plus,
+    // for mouse users, a control that rides on the cursor over the film
+    var pauseBtn = document.getElementById('hero-pause');
+    var cursor = document.getElementById('hero-cursor');
+    var hero = heroVideo.closest('.hero');
+    var filmActive = false;  // true while there's still motion to control
+    var setState = function (paused) {
+      if (pauseBtn) {
+        pauseBtn.setAttribute('aria-pressed', String(paused));
+        pauseBtn.setAttribute('aria-label', paused ? 'Play background video' : 'Pause background video');
+        pauseBtn.querySelector('.hero__pause-label').textContent = paused ? 'Play' : 'Pause';
+      }
+      if (cursor) {
+        cursor.classList.toggle('is-paused', paused);
+        cursor.querySelector('.hero-cursor__label').textContent = paused ? 'Play' : 'Pause';
+      }
+    };
+    var toggleFilm = function () {
+      if (!filmActive) return;
+      if (heroVideo.paused) { heroVideo.play(); setState(false); }
+      else { heroVideo.pause(); setState(true); }
+    };
+    var endFilm = function () {
+      filmActive = false;
+      if (pauseBtn) pauseBtn.hidden = true;
+      if (hero) hero.classList.remove('cursor-on');
+      if (cursor) cursor.classList.remove('is-visible');
+    };
+    if (pauseBtn) pauseBtn.addEventListener('click', toggleFilm);
+    heroVideo.addEventListener('playing', function () {
+      filmActive = true;
+      if (pauseBtn) pauseBtn.hidden = false;
+      if (hero && finePointer) hero.classList.add('cursor-on');
+    });
+
+    // cursor control (mouse / trackpad only)
+    var finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+    if (hero && cursor && finePointer) {
+      var tx = 0, ty = 0, cx = 0, cy = 0, rafId = null;
+      var follow = function () {
+        cx += (tx - cx) * 0.25;  // slight glide behind the pointer
+        cy += (ty - cy) * 0.25;
+        cursor.style.transform = 'translate3d(' + cx + 'px,' + cy + 'px,0)';
+        rafId = (Math.abs(tx - cx) > 0.2 || Math.abs(ty - cy) > 0.2) ? requestAnimationFrame(follow) : null;
+      };
+      // over links / buttons the normal pointer returns
+      var overControl = function (el) { return !!(el && el.closest('a, button')); };
+      hero.addEventListener('mousemove', function (e) {
+        if (!filmActive) return;
+        tx = e.clientX; ty = e.clientY;
+        if (!cursor.classList.contains('is-visible')) { cx = tx; cy = ty; }
+        cursor.classList.toggle('is-visible', !overControl(e.target));
+        if (!rafId) rafId = requestAnimationFrame(follow);
+      });
+      hero.addEventListener('mouseleave', function () {
+        cursor.classList.remove('is-visible');
+      });
+      hero.addEventListener('click', function (e) {
+        if (overControl(e.target) || window.getSelection().toString()) return;
+        toggleFilm();
+      });
+    }
+
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      showStill();
+    } else {
+      heroVideo.addEventListener('ended', function () {
+        heroVideo.pause();  // hold on the final frame...
+        fadeToStill(false); // ...and dissolve into the overview still
+        endFilm();          // nothing left to pause
+      });
+      // background tabs refuse autoplay: wait until the tab is visible, and
+      // only fall back to the still if it's refused while being looked at
+      var whenVisible = function (fn) {
+        if (!document.hidden) { fn(); return; }
+        var on = function () {
+          if (document.hidden) return;
+          document.removeEventListener('visibilitychange', on);
+          fn();
+        };
+        document.addEventListener('visibilitychange', on);
+      };
+      var tryPlay = function () {
+        var p = heroVideo.play();
+        if (p && p.catch) {
+          p.catch(function () {
+            if (document.hidden) whenVisible(tryPlay);
+            else showStill();
+          });
+        }
+      };
+      whenVisible(tryPlay);
+    }
+  }
+
   // Multi-step Google Form (volunteer sign-up): one step at a time with a
   // progress bar, friendly inline validation, an auto-saved draft, and a
   // direct post into the Google Form's formResponse endpoint.
@@ -260,6 +394,19 @@
       field.classList.toggle('is-invalid', !!msg);
       var err = field.querySelector('.field__error');
       if (err) err.textContent = msg || '';
+      // tell screen readers which inputs are wrong, and why
+      field.querySelectorAll('input, textarea, select').forEach(function (el) {
+        if (msg) {
+          el.setAttribute('aria-invalid', 'true');
+          if (err) {
+            if (!err.id) err.id = 'err-' + Math.random().toString(36).slice(2, 8);
+            el.setAttribute('aria-errormessage', err.id);
+          }
+        } else {
+          el.removeAttribute('aria-invalid');
+          el.removeAttribute('aria-errormessage');
+        }
+      });
     };
     var validateStep = function (step) {
       var firstBad = null;

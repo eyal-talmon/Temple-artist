@@ -13,13 +13,14 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Cormorant+Garamond:ital,wght@0,300..700;1,300..700&family=Instrument+Sans:wght@400;500;600&family=Young+Serif&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/styles.css?v=31" />
+  <link rel="stylesheet" href="css/styles.css?v=37" />
   <!-- enable scroll-reveal hidden state before paint (no flash; no-JS safe) -->
   <script>document.documentElement.classList.add('js-reveal');</script>
   <!-- TEMPORARY font preview: apply the saved title font before paint -->
   <script>try{var tf=localStorage.getItem('temple-title-font');if(tf==='cormorant'||tf==='archivo')document.documentElement.setAttribute('data-font',tf)}catch(e){}</script>
 </head>
 <body>
+  <a class="skip-link" href="#main">Skip to content</a>
   <div class="page" id="top">
 
     <!-- ================= Header ================= -->
@@ -29,12 +30,12 @@
           The Temple <span class="logo__year">2027</span>
         </a>
 
-        <input type="checkbox" id="nav-check" />
-        <label class="nav-toggle" for="nav-check" aria-label="Toggle navigation">
+        <input type="checkbox" id="nav-check" aria-label="Menu" aria-controls="site-nav" />
+        <label class="nav-toggle" for="nav-check" aria-hidden="true">
           <span></span><span></span><span></span>
         </label>
 
-        <nav class="nav" aria-label="Main">
+        <nav class="nav" id="site-nav" aria-label="Main">
           <a href="index.html">Home</a>
           <a href="about.html">About</a>
           <a href="volunteer.html">Volunteer</a>
@@ -46,7 +47,7 @@
       </div>
     </header>
 
-    <main>
+    <main id="main" tabindex="-1">
       <!-- ================= Contact form ================= -->
       <section class="page-intro contact-page">
         <div class="container contact-page__grid">
@@ -131,9 +132,9 @@
         <p class="footer__mark" aria-hidden="true">The Temple <span>2027</span></p>
 
         <div class="footer__bottom">
-          <p>&copy; 2026 The Temple 2027. All rights reserved.</p>
+          <p>&copy; 2026 The Temple 2027. All rights reserved. <a class="footer__legal" href="privacy.html">Privacy policy</a></p>
           <div class="footer__links">
-            <a class="footer__credit" href="https://muzedesign.com" target="_blank" rel="noopener">Site by Muze</a>
+            <a class="footer__credit" href="https://muzedesign.com" target="_blank" rel="noopener">Site by Muze<span class="sr-only"> (opens in a new tab)</span></a>
             <a class="footer__top-link" href="#top">Back to top <span aria-hidden="true">&uarr;</span></a>
           </div>
         </div>
@@ -142,6 +143,6 @@
 
   </div>
 
-  <script src="js/main.js?v=31" defer></script>
+  <script src="js/main.js?v=37" defer></script>
 </body>
 </html>
