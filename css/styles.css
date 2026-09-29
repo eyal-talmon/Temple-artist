@@ -476,12 +476,13 @@ a:focus-visible {
 .hero__pause[aria-pressed="true"] .hero__pause-icon--play {
   display: block;
 }
-/* phones: the buttons fill the bottom, so sit top-right under the header */
+/* phones: the buttons fill the bottom, so sit top-left under the header */
 @media (max-width: 900px) {
   .hero__pause {
     top: calc(var(--header-h) + 12px);
     bottom: auto;
-    right: var(--pad);
+    right: auto;
+    left: var(--pad);
   }
 }
 
