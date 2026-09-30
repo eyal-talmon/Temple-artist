@@ -14,7 +14,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Cormorant+Garamond:ital,wght@0,300..700;1,300..700&family=Instrument+Sans:wght@400;500;600&family=Young+Serif&display=swap" rel="stylesheet" />
   <link rel="preload" as="image" href="img/hero-video-start.jpg" />
-  <link rel="stylesheet" href="css/styles.css?v=41" />
+  <link rel="stylesheet" href="css/styles.css?v=46" />
   <!-- enable scroll-reveal hidden state before paint (no flash; no-JS safe) -->
   <script>document.documentElement.classList.add('js-reveal');</script>
   <!-- reduced motion: show the hero still from the first paint (no video flash) -->
@@ -53,31 +53,34 @@
     <main id="main" tabindex="-1">
       <!-- ================= Hero (above the fold) ================= -->
       <section class="hero">
-        <!-- hero film: plays once (reversed: from above the playa into the
-             Temple), then holds on its last frame. Decorative, muted. -->
-        <video
-          class="hero__bg hero__video"
-          id="hero-video"
-          muted
-          playsinline
-          preload="auto"
-          poster="img/hero-video-start.jpg"
-          data-end-frame="img/hero-video-end.jpg"
-          aria-hidden="true"
-        >
-          <source src="img/hero-video-sm.mp4" type="video/mp4" media="(max-width: 900px)" />
-          <source src="img/hero-video.mp4" type="video/mp4" />
-        </video>
-        <!-- the film fades into this still when it ends (also the fallback) -->
-        <img
-          class="hero__bg hero__after"
-          src="img/hero-overview.jpg"
-          srcset="img/hero-overview-sm.jpg 1200w, img/hero-overview.jpg 1754w"
-          sizes="100vw"
-          alt="Aerial view of The Temple 2027 at dusk: the lit timber spires and courtyard wall glowing on the playa, with Black Rock City's lights behind"
-          loading="lazy"
-          decoding="async"
-        />
+        <!-- film + still move together for the parallax effect -->
+        <div class="hero__media" id="hero-media">
+          <!-- hero film: plays once, then fades into the overview still.
+               Decorative and muted. -->
+          <video
+            class="hero__bg hero__video"
+            id="hero-video"
+            muted
+            playsinline
+            preload="auto"
+            poster="img/hero-video-start.jpg"
+            data-end-frame="img/hero-video-end.jpg"
+            aria-hidden="true"
+          >
+            <source src="img/hero-video-sm.mp4" type="video/mp4" media="(max-width: 900px)" />
+            <source src="img/hero-video.mp4" type="video/mp4" />
+          </video>
+          <!-- the film fades into this still when it ends (also the fallback) -->
+          <img
+            class="hero__bg hero__after"
+            src="img/hero-overview.jpg"
+            srcset="img/hero-overview-sm.jpg 1200w, img/hero-overview.jpg 1754w"
+            sizes="100vw"
+            alt="Aerial view of The Temple 2027 at dusk: the lit timber spires and courtyard wall glowing on the playa, with Black Rock City's lights behind"
+            loading="lazy"
+            decoding="async"
+          />
+        </div>
         <!-- pause/play for the hero film (motion sensitivity, WCAG 2.2.2) -->
         <button type="button" class="hero__pause" id="hero-pause" aria-controls="hero-video" aria-pressed="false" aria-label="Pause background video" hidden>
           <svg class="hero__pause-icon hero__pause-icon--pause" viewBox="0 0 24 24" aria-hidden="true"><rect x="6.5" y="5" width="3.6" height="14" rx="1" /><rect x="13.9" y="5" width="3.6" height="14" rx="1" /></svg>
@@ -400,6 +403,6 @@
 
   </div>
 
-  <script src="js/main.js?v=41" defer></script>
+  <script src="js/main.js?v=46" defer></script>
 </body>
 </html>

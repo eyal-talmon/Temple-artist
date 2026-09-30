@@ -361,6 +361,26 @@
     }
   }
 
+  // Hero parallax: the film / still layer scrolls at ~35% of page speed
+  // behind the headline. Only while the hero is on screen; off for people
+  // who prefer reduced motion.
+  var heroMedia = document.getElementById('hero-media');
+  if (heroMedia && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    var heroBox = heroMedia.closest('.hero');
+    var ticking = false;
+    var PARALLAX = 0.35;
+    var updateParallax = function () {
+      ticking = false;
+      var y = window.scrollY;
+      if (y > heroBox.offsetTop + heroBox.offsetHeight) return;  // off screen
+      heroMedia.style.transform = 'translate3d(0,' + (y * PARALLAX).toFixed(1) + 'px,0)';
+    };
+    window.addEventListener('scroll', function () {
+      if (!ticking) { ticking = true; requestAnimationFrame(updateParallax); }
+    }, { passive: true });
+    updateParallax();
+  }
+
   // Multi-step Google Form (volunteer sign-up): one step at a time with a
   // progress bar, friendly inline validation, an auto-saved draft, and a
   // direct post into the Google Form's formResponse endpoint.
