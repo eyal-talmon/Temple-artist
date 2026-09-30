@@ -681,28 +681,28 @@
       // light letters in a loose left-to-right wave with some randomness
       chars.forEach(function (ch, i) {
         if (ch.classList.contains('is-burning')) return;
-        var delay = i * 40 + Math.random() * 110;
+        var delay = i * 12 + Math.random() * 35;
         later(function () {
           ch.style.animationDelay = '';
           ch.classList.remove('is-returning');
           ch.classList.add('is-burning');
-          // follow the burn edge up the letter (matches the 1s CSS burn)
+          // follow the burn edge up the letter (matches the 0.35s CSS burn)
           [0, 0.15, 0.35, 0.55, 0.75, 0.95].forEach(function (frac, k) {
-            later(function () { spawnEmbers(ch, frac, 6); }, 60 + k * 140);
+            later(function () { spawnEmbers(ch, frac, 6); }, 20 + k * 50);
           });
         }, delay);
       });
-      later(function () { state = 'burnt'; }, chars.length * 40 + 1200);
+      later(function () { state = 'burnt'; }, chars.length * 12 + 420);
     };
 
-    // letters grow back up from their baseline, left to right. Stagger is a
-    // CSS delay, so a delayed timer can never leave a letter stuck as ash.
+    // letters grow back up from their baseline, all together (no
+    // left-to-right stagger), so the whole word rises bottom to top.
     var regrow = function () {
       clearTimers();
       state = 'growing';
       var burnt = chars.filter(function (ch) { return ch.classList.contains('is-burning'); });
-      burnt.forEach(function (ch, i) {
-        ch.style.animationDelay = (i * 0.07) + 's';
+      burnt.forEach(function (ch) {
+        ch.style.animationDelay = '';
         ch.classList.remove('is-burning');
         ch.classList.add('is-returning');
       });
@@ -712,7 +712,7 @@
           ch.style.animationDelay = '';
         });
         state = 'idle';
-      }, burnt.length * 70 + 1300);
+      }, 1300);
     };
 
     if (touch) {
@@ -720,7 +720,7 @@
       el.addEventListener('click', function () {
         if (state !== 'idle') return;
         burn();
-        later(regrow, chars.length * 40 + 1300);
+        later(regrow, chars.length * 12 + 500);
       });
     } else {
       el.addEventListener('mouseenter', burn);

@@ -1369,7 +1369,7 @@ html.rm .hero:not(.user-played) .hero__after {
   will-change: transform, opacity, filter, clip-path;
 }
 .burn-char.is-burning {
-  animation: char-burn 1s cubic-bezier(0.4, 0, 0.6, 1) forwards;
+  animation: char-burn 0.35s cubic-bezier(0.4, 0, 0.6, 1) forwards;
 }
 .burn-char.is-returning {
   animation: char-return 1.1s cubic-bezier(0.25, 0.8, 0.25, 1) both;
