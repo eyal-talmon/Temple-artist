@@ -885,6 +885,29 @@ html.rm .hero:not(.user-played) .hero__after {
   --sweep: 70deg;
 }
 
+/* Ceiling plan: the timber builds out from the Trunk in a spiral, then
+   holds on the full plan. main.js draws the spiral on the canvas and
+   adds .is-building while it runs; without it the plain <img> shows. */
+.build-plan {
+  position: relative;
+}
+.build-plan img {
+  display: block;
+}
+.build-plan__canvas {
+  display: none;
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.build-plan.is-building img {
+  visibility: hidden;
+}
+.build-plan.is-building .build-plan__canvas {
+  display: block;
+}
+
 /* ============================================================
    01 — Inspiration
    ============================================================ */
