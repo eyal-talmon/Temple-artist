@@ -49,7 +49,7 @@
   --cream-80: rgba(244, 236, 224, 0.8);
   --cream-20: rgba(244, 236, 224, 0.2);
 
-  --page-max: 2000px;
+  --page-max: none;      /* backgrounds run full-bleed; .container caps content */
   --maxw: 1680px;
   --pad: 120px;          /* desktop side padding */
   --header-h: 88px;
@@ -142,7 +142,7 @@ p {
 }
 
 /* ---------- Layout helpers ---------- */
-/* the whole site is capped at 2000px and centred */
+/* page backgrounds are full-width; content width is capped by .container */
 .page {
   max-width: var(--page-max);
   margin-inline: auto;
