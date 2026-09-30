@@ -1576,6 +1576,21 @@ html.rm .hero:not(.user-played) .hero__after {
   background: var(--licorice);
 }
 
+/* About work photos: once revealed, each eases slowly into a zoom and
+   holds it (same feel as the interior slider) */
+.work__img {
+  overflow: hidden;
+  border-radius: var(--radius);
+}
+.work__img img {
+  display: block;
+  transform: scale(1);
+  transition: transform 7s cubic-bezier(0.25, 0.1, 0.25, 1) 0.2s;
+}
+.work__img.is-visible img {
+  transform: scale(1.1);
+}
+
 /* schedule-style record, set like a drawing's revision table */
 .about-record__head {
   margin-bottom: clamp(40px, 5vw, 96px);
@@ -2759,6 +2774,9 @@ html.rm .hero:not(.user-played) .hero__after {
   }
   .js-reveal .flip-anim img {
     visibility: visible;
+  }
+  .work__img.is-visible img {
+    transform: none;
   }
   .js-reveal .flip-anim__tree,
   .js-reveal .flip-anim__loop {
