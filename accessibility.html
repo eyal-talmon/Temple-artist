@@ -15,8 +15,9 @@
   <link rel="stylesheet" href="css/styles.css?v=67" />
   <!-- enable scroll-reveal hidden state before paint (no flash; no-JS safe) -->
   <script>document.documentElement.classList.add('js-reveal');</script>
-  <!-- title-font toggle: apply the saved title font before paint -->
-  <script>try{var tf=localStorage.getItem('temple-title-font');if(tf==='cormorant'||tf==='archivo')document.documentElement.setAttribute('data-font',tf)}catch(e){}</script>
+  <!-- title-font toggle: apply the saved title font before paint;
+       a refresh resets it to Aleo -->
+  <script>try{var nv=performance.getEntriesByType&&performance.getEntriesByType('navigation')[0];if(nv&&nv.type==='reload')localStorage.removeItem('temple-title-font');var tf=localStorage.getItem('temple-title-font');if(tf==='cormorant'||tf==='archivo')document.documentElement.setAttribute('data-font',tf)}catch(e){}</script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
