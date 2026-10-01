@@ -10,12 +10,13 @@
   <link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32.png?v=3" />
   <link rel="icon" type="image/png" sizes="192x192" href="img/favicon-192.png?v=3" />
   <link rel="apple-touch-icon" href="img/apple-touch-icon.png?v=3" />
-  <link rel="preload" href="fonts/young-serif-latin.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="fonts/aleo-latin.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="preload" href="fonts/instrument-sans-latin.woff2" as="font" type="font/woff2" crossorigin />
-  <link rel="stylesheet" href="css/styles.css?v=57" />
+  <link rel="stylesheet" href="css/styles.css?v=67" />
   <!-- enable scroll-reveal hidden state before paint (no flash; no-JS safe) -->
   <script>document.documentElement.classList.add('js-reveal');</script>
-  <!-- TEMPORARY font preview: apply the saved title font before paint -->
+  <!-- title-font toggle: apply the saved title font before paint -->
+  <script>try{var tf=localStorage.getItem('temple-title-font');if(tf==='cormorant'||tf==='archivo')document.documentElement.setAttribute('data-font',tf)}catch(e){}</script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -35,8 +36,8 @@
 
         <nav class="nav" id="site-nav" aria-label="Main">
           <a href="index.html">Home</a>
-          <a href="about.html">About</a>
           <a href="volunteer.html">Volunteer</a>
+          <a href="about.html">About the artist</a>
           <a href="contact.html">Contact</a>
           <a class="btn btn--red nav__cta" href="donate.html">Donate</a>
         </nav>
@@ -51,7 +52,7 @@
         <div class="container">
           <p class="index" data-reveal><span>&sect;</span> Accessibility</p>
           <h1 class="display" data-reveal>Accessibility.</h1>
-          <p class="legal__updated" data-reveal>Last reviewed: September 29, 2026</p>
+          <p class="legal__updated" data-reveal>Last reviewed: October 1, 2026</p>
         </div>
       </section>
 
@@ -128,6 +129,13 @@
             <a href="donate.html">Donate</a>
           </nav>
 
+          <div class="footer__col footer__fonts" role="group" aria-label="Title font">
+            <p class="footer__heading">Fonts</p>
+            <button type="button" class="font-opt" data-font-opt="aleo" aria-pressed="true">Aleo</button>
+            <button type="button" class="font-opt" data-font-opt="cormorant" aria-pressed="false">Cormorant Garamond</button>
+            <button type="button" class="font-opt" data-font-opt="archivo" aria-pressed="false">Archivo Black</button>
+          </div>
+
         </div>
 
         <p class="footer__mark" aria-hidden="true">The Temple <span>2027</span></p>
@@ -144,6 +152,6 @@
 
   </div>
 
-  <script src="js/main.js?v=57" defer></script>
+  <script src="js/main.js?v=61" defer></script>
 </body>
 </html>

@@ -56,6 +56,7 @@
     document.addEventListener('keydown', function (e) {
       if (e.key === 'Escape' && navCheck.checked) {
         setMenu(false);
+        navCheck.focus();  // back to the menu button, not the top of the page
       }
     });
   }
@@ -433,17 +434,25 @@
       var err = field.querySelector('.field__error');
       if (err) err.textContent = msg || '';
       // tell screen readers which inputs are wrong, and why
+      // (aria-describedby too: aria-errormessage alone is skipped by
+      // some screen readers, VoiceOver among them)
+      if (err && !err.id) err.id = 'err-' + Math.random().toString(36).slice(2, 8);
       field.querySelectorAll('input, textarea, select').forEach(function (el) {
+        var described = (el.getAttribute('aria-describedby') || '').split(' ').filter(function (id) {
+          return id && (!err || id !== err.id);
+        });
         if (msg) {
           el.setAttribute('aria-invalid', 'true');
           if (err) {
-            if (!err.id) err.id = 'err-' + Math.random().toString(36).slice(2, 8);
             el.setAttribute('aria-errormessage', err.id);
+            described.push(err.id);
           }
         } else {
           el.removeAttribute('aria-invalid');
           el.removeAttribute('aria-errormessage');
         }
+        if (described.length) el.setAttribute('aria-describedby', described.join(' '));
+        else el.removeAttribute('aria-describedby');
       });
     };
     var validateStep = function (step) {
@@ -897,6 +906,42 @@
       else planImg.addEventListener('load', go);
     }, { threshold: 0.3 });
     pio.observe(plan);
+  }
+
+  // Title-font toggle (footer "Fonts" column): switch every title between
+  // Aleo (default), Cormorant Garamond and Archivo Black, remembered
+  // across pages.
+  var fontOpts = document.querySelectorAll('[data-font-opt]');
+  if (fontOpts.length) {
+    var root = document.documentElement;
+    var syncFontOpts = function () {
+      var active = root.getAttribute('data-font') || 'aleo';
+      fontOpts.forEach(function (b) {
+        b.setAttribute('aria-pressed', String(b.getAttribute('data-font-opt') === active));
+      });
+    };
+    fontOpts.forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var choice = btn.getAttribute('data-font-opt');
+        if (choice === 'aleo') root.removeAttribute('data-font');
+        else root.setAttribute('data-font', choice);
+        try { localStorage.setItem('temple-title-font', choice); } catch (e) {}
+        syncFontOpts();
+        // re-fit the footer wordmark once the new face has loaded
+        var refit = function () { window.dispatchEvent(new Event('resize')); };
+        if (document.fonts && document.fonts.load) {
+          var face = {
+            aleo: '370 100px "Aleo"',
+            cormorant: '600 100px "Cormorant Garamond"',
+            archivo: '400 100px "Archivo Black"'
+          }[choice];
+          document.fonts.load(face).then(refit, refit);
+        } else {
+          refit();
+        }
+      });
+    });
+    syncFontOpts();
   }
 
   // Scroll reveal: fade elements up once as they enter the viewport.

@@ -10,12 +10,13 @@
   <link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32.png?v=3" />
   <link rel="icon" type="image/png" sizes="192x192" href="img/favicon-192.png?v=3" />
   <link rel="apple-touch-icon" href="img/apple-touch-icon.png?v=3" />
-  <link rel="preload" href="fonts/young-serif-latin.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="fonts/aleo-latin.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="preload" href="fonts/instrument-sans-latin.woff2" as="font" type="font/woff2" crossorigin />
-  <link rel="stylesheet" href="css/styles.css?v=57" />
+  <link rel="stylesheet" href="css/styles.css?v=67" />
   <!-- enable scroll-reveal hidden state before paint (no flash; no-JS safe) -->
   <script>document.documentElement.classList.add('js-reveal');</script>
-  <!-- TEMPORARY font preview: apply the saved title font before paint -->
+  <!-- title-font toggle: apply the saved title font before paint -->
+  <script>try{var tf=localStorage.getItem('temple-title-font');if(tf==='cormorant'||tf==='archivo')document.documentElement.setAttribute('data-font',tf)}catch(e){}</script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -35,8 +36,8 @@
 
         <nav class="nav" id="site-nav" aria-label="Main">
           <a href="index.html">Home</a>
-          <a href="about.html" aria-current="page">About</a>
           <a href="volunteer.html">Volunteer</a>
+          <a href="about.html" aria-current="page">About the artist</a>
           <a href="contact.html">Contact</a>
           <a class="btn btn--red nav__cta" href="donate.html">Donate</a>
         </nav>
@@ -47,10 +48,9 @@
 
     <main id="main" tabindex="-1">
       <!-- ================= Intro ================= -->
-      <section class="page-intro">
+      <section class="page-intro page-intro--quiet">
         <div class="container">
-          <p class="index" data-reveal><span>&sect;</span> About the artist</p>
-          <h1 class="display" data-reveal>Fifteen Burns, one&nbsp;Temple.</h1>
+          <h1 class="index" data-reveal><span>&sect;</span> About the artist</h1>
         </div>
       </section>
 
@@ -58,10 +58,10 @@
       <section class="about-bio">
         <div class="container about-bio__grid">
           <figure class="about-bio__portrait" data-reveal>
-            <img src="img/steve.jpg" alt="Portrait of Steve on a deck above the ocean on a foggy day" />
+            <img src="img/steve-tabitha.jpg" alt="Steve and Tabitha in hard hats, standing together in front of a wall of timber arches hung with gas-cylinder bells" />
             <figcaption class="caption">
-              <span class="caption__fig">Steve</span>
-              <span>Architect, Bay Area. Lead artist, The Temple 2027.</span>
+              <span class="caption__fig">Steve &amp; Tabitha</span>
+              <span>Lead artist, The Temple 2027, with his wife Tabitha.</span>
             </figcaption>
           </figure>
 
@@ -74,7 +74,7 @@
             <p>
               He worked on the Temple&rsquo;s architecture teams in 2014, 2016 and
               2023, and was a co&#8209;lead artist for the 2017 Temple. Away from the
-              Temple, he has built the Carillon, a bell tower that has returned to
+              Temple, he has built Carillon, a bell tower that has returned to
               the playa in 2019, 2022 and 2025, the last time within the Man
               pavilion.
             </p>
@@ -91,14 +91,14 @@
         </div>
       </section>
 
-      <!-- ================= The Carillon: vertical gallery ================= -->
-      <!-- STEVE: replace the bracketed notes in each .work__note with a few
-           words about that year's piece. -->
+      <!-- ================= Carillon: vertical gallery ================= -->
+      <!-- STEVE: a few words about each year's piece can go in a
+           <p class="work__note"> under its .work__meta. -->
       <section class="section about-works">
         <div class="container">
           <header class="about-works__head" data-reveal>
             <p class="index"><span>01</span> Beyond the Temple</p>
-            <h2 class="display display--md">The Carillon.</h2>
+            <h2 class="display display--md">Does this ring a&nbsp;bell?</h2>
             <p class="about-works__lede">
               A bell tower built for the playa, returning in 2019, 2022 and 2025,
               the last time within the Man pavilion.
@@ -108,13 +108,12 @@
           <article class="work">
             <div class="work__text" data-reveal>
               <p class="work__year">2019</p>
-              <h3 class="work__title">The Carillon</h3>
+              <h3 class="work__title">Carillon</h3>
               <p class="work__meta">Black Rock City</p>
-              <p class="work__note">[Steve: a few words about the 2019 Carillon: the idea behind it, the build, a moment on the playa.]</p>
             </div>
             <div class="work__media">
               <figure class="work__img work__img--portrait" data-reveal>
-                <img src="img/carillon-2019.jpg" alt="The 2019 Carillon at night: a slatted timber bell tower glowing orange on the dark playa" loading="lazy" width="1200" height="1600" />
+                <img src="img/carillon-2019.jpg" alt="Carillon 2019 at night: a slatted timber bell tower glowing orange on the dark playa" loading="lazy" width="1200" height="1600" />
               </figure>
             </div>
           </article>
@@ -122,19 +121,37 @@
           <article class="work">
             <div class="work__text" data-reveal>
               <p class="work__year">2022</p>
-              <h3 class="work__title">The Carillon</h3>
+              <h3 class="work__title">Carillon</h3>
               <p class="work__meta">Black Rock City</p>
-              <p class="work__note">[Steve: a few words about the 2022 Carillon: what changed from 2019, the crew, how people used it.]</p>
             </div>
             <div class="work__media">
               <figure class="work__img work__img--portrait" data-reveal>
-                <img src="img/carillon-2022-1.jpg" alt="Looking up at the 2022 Carillon: layered timber slats lit warm from within against the night sky" loading="lazy" width="1200" height="1600" />
+                <img src="img/carillon-2022-1.jpg" alt="Looking up at Carillon 2022: layered timber slats lit warm from within against the night sky" loading="lazy" width="1200" height="1600" />
               </figure>
               <figure class="work__img" data-reveal>
-                <img src="img/carillon-2022-2.jpg" alt="The 2022 Carillon lit at night with people and bikes gathered at its base" loading="lazy" width="1600" height="1200" />
+                <img src="img/carillon-2022-2.jpg" alt="Carillon 2022 lit at night with people and bikes gathered at its base" loading="lazy" width="1600" height="1200" />
               </figure>
               <figure class="work__img" data-reveal>
-                <img src="img/carillon-2022-3.jpg" alt="The 2022 Carillon glowing on the playa with art cars and lights in the distance" loading="lazy" width="1600" height="1200" />
+                <img src="img/carillon-2022-3.jpg" alt="Carillon 2022 glowing on the playa with art cars and lights in the distance" loading="lazy" width="1600" height="1200" />
+              </figure>
+              <figure class="work__img" data-reveal>
+                <img src="img/carillon-2022-aerial.jpg" alt="Aerial view of Carillon 2022 burning in the distance at dusk, a crowd and glowing art cars gathered on the playa in the foreground" loading="lazy" width="1024" height="683" />
+              </figure>
+              <figure class="work__img work__img--portrait" data-reveal>
+                <img src="img/carillon-2022-burn.jpg" alt="Carillon 2022 burning: its timber frame engulfed in a towering column of flame against the night sky" loading="lazy" width="1200" height="1600" />
+              </figure>
+            </div>
+          </article>
+
+          <article class="work">
+            <div class="work__text" data-reveal>
+              <p class="work__year">2025</p>
+              <h3 class="work__title">Carillon</h3>
+              <p class="work__meta">Within the Man pavilion</p>
+            </div>
+            <div class="work__media">
+              <figure class="work__img work__img--portrait" data-reveal>
+                <img src="img/carillon-2025.jpg" alt="Carillon 2025 inside the Man pavilion: a corner of reclaimed timber arches, each framing a hanging gas-cylinder bell" loading="lazy" width="1200" height="1600" />
               </figure>
             </div>
           </article>
@@ -152,7 +169,7 @@
           <ol class="record" data-reveal>
             <li class="record__row">
               <span class="record__year">2014</span>
-              <span class="record__work">The Temple</span>
+              <span class="record__work">The Temple of Grace</span>
               <span class="record__role">Architecture team</span>
             </li>
             <li class="record__row">
@@ -167,23 +184,23 @@
             </li>
             <li class="record__row">
               <span class="record__year">2019</span>
-              <span class="record__work">The Carillon</span>
-              <span class="record__role">Bell tower</span>
+              <span class="record__work">Carillon</span>
+              <span class="record__role">Lead artist</span>
             </li>
             <li class="record__row">
               <span class="record__year">2022</span>
-              <span class="record__work">The Carillon</span>
-              <span class="record__role">Bell tower</span>
+              <span class="record__work">Carillon</span>
+              <span class="record__role">Lead artist</span>
             </li>
             <li class="record__row">
               <span class="record__year">2023</span>
-              <span class="record__work">The Temple</span>
+              <span class="record__work">The Temple of the Heart</span>
               <span class="record__role">Architecture team</span>
             </li>
             <li class="record__row">
               <span class="record__year">2025</span>
-              <span class="record__work">The Carillon</span>
-              <span class="record__role">Within the Man pavilion</span>
+              <span class="record__work">Carillon &ndash; Within the Man Pavilion</span>
+              <span class="record__role">Lead artist</span>
             </li>
             <li class="record__row record__row--now">
               <span class="record__year">2027</span>
@@ -237,6 +254,13 @@
             <a href="donate.html">Donate</a>
           </nav>
 
+          <div class="footer__col footer__fonts" role="group" aria-label="Title font">
+            <p class="footer__heading">Fonts</p>
+            <button type="button" class="font-opt" data-font-opt="aleo" aria-pressed="true">Aleo</button>
+            <button type="button" class="font-opt" data-font-opt="cormorant" aria-pressed="false">Cormorant Garamond</button>
+            <button type="button" class="font-opt" data-font-opt="archivo" aria-pressed="false">Archivo Black</button>
+          </div>
+
         </div>
 
         <p class="footer__mark" aria-hidden="true">The Temple <span>2027</span></p>
@@ -253,6 +277,6 @@
 
   </div>
 
-  <script src="js/main.js?v=57" defer></script>
+  <script src="js/main.js?v=61" defer></script>
 </body>
 </html>

@@ -10,15 +10,16 @@
   <link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32.png?v=3" />
   <link rel="icon" type="image/png" sizes="192x192" href="img/favicon-192.png?v=3" />
   <link rel="apple-touch-icon" href="img/apple-touch-icon.png?v=3" />
-  <link rel="preload" href="fonts/young-serif-latin.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="fonts/aleo-latin.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="preload" href="fonts/instrument-sans-latin.woff2" as="font" type="font/woff2" crossorigin />
-  <link rel="preload" as="image" href="img/hero-video-start.jpg" />
-  <link rel="stylesheet" href="css/styles.css?v=57" />
+  <link rel="preload" as="image" href="img/hero-video-start.jpg?v=2" />
+  <link rel="stylesheet" href="css/styles.css?v=67" />
   <!-- enable scroll-reveal hidden state before paint (no flash; no-JS safe) -->
   <script>document.documentElement.classList.add('js-reveal');</script>
+  <!-- title-font toggle: apply the saved title font before paint -->
+  <script>try{var tf=localStorage.getItem('temple-title-font');if(tf==='cormorant'||tf==='archivo')document.documentElement.setAttribute('data-font',tf)}catch(e){}</script>
   <!-- reduced motion: show the hero still from the first paint (no video flash) -->
   <script>if(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches)document.documentElement.classList.add('rm')</script>
-  <!-- TEMPORARY font preview: apply the saved title font before paint -->
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -38,8 +39,8 @@
 
         <nav class="nav" id="site-nav" aria-label="Main">
           <a href="index.html" aria-current="page">Home</a>
-          <a href="about.html">About</a>
           <a href="volunteer.html">Volunteer</a>
+          <a href="about.html">About the artist</a>
           <a href="contact.html">Contact</a>
           <a class="btn btn--red nav__cta" href="donate.html">Donate</a>
         </nav>
@@ -61,12 +62,12 @@
             muted
             playsinline
             preload="auto"
-            poster="img/hero-video-start.jpg"
-            data-end-frame="img/hero-video-end.jpg"
+            poster="img/hero-video-start.jpg?v=2"
+            data-end-frame="img/hero-video-end.jpg?v=2"
             aria-hidden="true"
           >
-            <source src="img/hero-video-sm.mp4" type="video/mp4" media="(max-width: 900px)" />
-            <source src="img/hero-video.mp4" type="video/mp4" />
+            <source src="img/hero-video-sm.mp4?v=2" type="video/mp4" media="(max-width: 900px)" />
+            <source src="img/hero-video.mp4?v=2" type="video/mp4" />
           </video>
           <!-- the film fades into this still when it ends (also the fallback) -->
           <img
@@ -247,6 +248,10 @@
                   <button type="button" class="ex-slider__dot" aria-label="Show interior view 2"></button>
                 </span>
               </figcaption>
+              <p class="skin-footnote">
+                <span aria-hidden="true">*</span> The skin pattern shown is conceptual.
+                <a href="#skin-note">Read the note</a>
+              </p>
             </figure>
 
             <div class="experiment__text" data-reveal>
@@ -285,6 +290,15 @@
             <div data-reveal>
               <p class="index"><span>03</span> Renderings</p>
               <h2 class="display display--md">From first light to last&nbsp;light.</h2>
+              <aside class="skin-note" id="skin-note" aria-label="A note on the renderings">
+                <p class="skin-note__label">A note on the skin</p>
+                <p class="skin-note__text">
+                  While the Temple&rsquo;s architectural form is represented in these
+                  renderings, its skin is intentionally unresolved. The pattern shown is
+                  conceptual; the final skin will emerge through a collaborative process
+                  with the crew who will ultimately build&nbsp;it.
+                </p>
+              </aside>
             </div>
           </header>
 
@@ -303,7 +317,7 @@
             <figure class="dn-figure" data-reveal>
               <div class="dn-media">
                 <img class="dn-img dn-img--day" src="img/aerial-day.jpg" alt="Aerial view of the Temple and its courtyard at dawn in a soft dust haze" loading="lazy" />
-                <img class="dn-img dn-img--night" src="img/aerial-night.jpg" alt="Aerial view of the Temple glowing at dusk with Black Rock City's lights behind" loading="lazy" />
+                <img class="dn-img dn-img--night" src="img/hero-overview.jpg" alt="Aerial view of the Temple and its courtyard wall glowing at dusk with Black Rock City's lights behind" loading="lazy" />
               </div>
               <figcaption class="caption">
                 <span class="caption__fig">B</span>
@@ -311,10 +325,10 @@
               </figcaption>
             </figure>
 
-            <figure class="dn-figure" data-reveal>
+            <figure class="dn-figure dn-figure--plan" data-reveal>
               <div class="dn-media">
-                <img class="dn-img dn-img--day" src="img/siteplan-day.jpg" alt="Top-down site plan of the Temple: a hexagonal courtyard wall inside a triangle of construction lines" loading="lazy" />
-                <img class="dn-img dn-img--night" src="img/siteplan-night.jpg" alt="Top-down site plan of the Temple at night, the central chamber glowing" loading="lazy" />
+                <img class="dn-img dn-img--day" src="img/siteplan-day.jpg?v=2" alt="Top-down site plan of the Temple: a hexagonal courtyard wall inside a triangle of construction lines" loading="lazy" />
+                <img class="dn-img dn-img--night" src="img/siteplan-night.jpg?v=2" alt="Top-down site plan of the Temple at night, the central chamber glowing" loading="lazy" />
               </div>
               <figcaption class="caption">
                 <span class="caption__fig">C</span>
@@ -383,6 +397,13 @@
             <a href="donate.html">Donate</a>
           </nav>
 
+          <div class="footer__col footer__fonts" role="group" aria-label="Title font">
+            <p class="footer__heading">Fonts</p>
+            <button type="button" class="font-opt" data-font-opt="aleo" aria-pressed="true">Aleo</button>
+            <button type="button" class="font-opt" data-font-opt="cormorant" aria-pressed="false">Cormorant Garamond</button>
+            <button type="button" class="font-opt" data-font-opt="archivo" aria-pressed="false">Archivo Black</button>
+          </div>
+
         </div>
 
         <p class="footer__mark" aria-hidden="true">The Temple <span>2027</span></p>
@@ -399,6 +420,6 @@
 
   </div>
 
-  <script src="js/main.js?v=57" defer></script>
+  <script src="js/main.js?v=61" defer></script>
 </body>
 </html>
