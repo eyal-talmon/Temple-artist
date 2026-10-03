@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- password landing page: shown by middleware.js while SITE_PASSWORD is set -->
+  <meta name="robots" content="noindex, nofollow" />
+  <title>The Temple 2027 | Preview</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="/img/favicon-32.png?v=3" />
+  <link rel="apple-touch-icon" href="/img/apple-touch-icon.png?v=3" />
+  <link rel="preload" as="image" href="/gate/bg.jpg" />
+  <style>
+    @font-face {
+      font-family: "Aleo";
+      font-weight: 100 900;
+      font-display: swap;
+      src: url("/fonts/aleo-latin.woff2") format("woff2");
+    }
+    @font-face {
+      font-family: "Instrument Sans";
+      font-weight: 400 600;
+      font-display: swap;
+      src: url("/fonts/instrument-sans-latin.woff2") format("woff2");
+    }
+    :root {
+      --licorice: #23140c;
+      --cream: #f4ece0;
+      --cream-80: rgba(244, 236, 224, 0.8);
+      --khaki: #d0ba98;
+      --red: #91040c;
+      --red-hover: #a8101a;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; height: 100%; }
+    body {
+      min-height: 100vh;
+      min-height: 100svh;
+      display: flex;
+      align-items: flex-end;
+      color: var(--cream);
+      background: var(--licorice) url("/gate/bg.jpg") 50% 40% / cover no-repeat;
+      font-family: "Instrument Sans", system-ui, -apple-system, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+    /* same shading as the home page hero: dark at the top and bottom-left */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background:
+        linear-gradient(180deg, rgba(35, 20, 12, 0.7) 0%, rgba(35, 20, 12, 0) 22%),
+        linear-gradient(90deg, rgba(35, 20, 12, 0.7) 0%, rgba(35, 20, 12, 0) 60%),
+        linear-gradient(0deg, rgba(35, 20, 12, 0.92) 0%, rgba(35, 20, 12, 0.6) 30%, rgba(35, 20, 12, 0) 60%);
+    }
+    main {
+      position: relative;
+      width: 100%;
+      max-width: 1920px;
+      margin-inline: auto;
+      padding: 0 clamp(20px, 6vw, 120px) clamp(48px, 9vh, 120px);
+    }
+    .eyebrow {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin: 0 0 24px;
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--cream-80);
+    }
+    .eyebrow::before {
+      content: "";
+      width: 32px;
+      height: 1px;
+      background: currentColor;
+    }
+    h1 {
+      margin: 0;
+      font-family: "Aleo", Georgia, serif;
+      font-weight: 370;
+      font-size: clamp(48px, 8vw, 140px);
+      line-height: 0.95;
+      letter-spacing: -0.01em;
+    }
+    h1 span { color: var(--khaki); }
+    .lede {
+      max-width: 34ch;
+      margin: 24px 0 32px;
+      font-size: clamp(16px, 1.3vw, 19px);
+      line-height: 1.5;
+      color: var(--cream-80);
+    }
+    form {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      max-width: 460px;
+    }
+    label {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip: rect(0 0 0 0);
+      white-space: nowrap;
+    }
+    input {
+      flex: 1 1 220px;
+      min-width: 0;
+      height: 48px;
+      padding: 0 16px;
+      font: inherit;
+      font-size: 16px;
+      color: var(--cream);
+      background: rgba(35, 20, 12, 0.55);
+      border: 1px solid rgba(244, 236, 224, 0.45);
+      border-radius: 2px;
+      -webkit-backdrop-filter: blur(6px);
+      backdrop-filter: blur(6px);
+    }
+    input::placeholder { color: rgba(244, 236, 224, 0.6); }
+    input:focus { outline: none; border-color: var(--cream); }
+    input:focus-visible, button:focus-visible {
+      outline: 2px solid var(--khaki);
+      outline-offset: 3px;
+    }
+    input[aria-invalid="true"] { border-color: #f08a8a; }
+    button {
+      height: 48px;
+      padding: 0 28px;
+      font: inherit;
+      font-size: 15px;
+      font-weight: 600;
+      color: #fff;
+      background: var(--red);
+      border: 0;
+      border-radius: 2px;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+    }
+    button:hover { background: var(--red-hover); }
+    .error {
+      flex-basis: 100%;
+      margin: 0;
+      font-size: 14px;
+      color: #f6b3b3;
+    }
+    .error[hidden] { display: none; }
+  </style>
+</head>
+<body>
+  <main>
+    <p class="eyebrow">Burning Man 2027 &middot; Black Rock City, Nevada</p>
+    <h1>The Temple <span>2027</span></h1>
+    <p class="lede">This site is in preview. Enter the password to continue.</p>
+
+    <form method="post" action="/unlock">
+      <input type="hidden" name="next" id="gate-next" value="/" />
+      <label for="gate-password">Password</label>
+      <input id="gate-password" name="password" type="password" placeholder="Password"
+             autocomplete="current-password" required aria-describedby="gate-error" />
+      <button type="submit">Enter</button>
+      <p class="error" id="gate-error" role="alert" hidden>That password didn&rsquo;t work. Please try again.</p>
+    </form>
+  </main>
+
+  <script>
+    // come back to the page that was asked for; show the error after a wrong try
+    (function () {
+      var params = new URLSearchParams(location.search);
+      var wrong = params.get('gate') === 'wrong';
+      params.delete('gate');
+      var rest = params.toString();
+      var path = location.pathname.indexOf('/gate') === 0 ? '/' : location.pathname;
+      document.getElementById('gate-next').value = path + (rest ? '?' + rest : '');
+      var input = document.getElementById('gate-password');
+      if (wrong) {
+        document.getElementById('gate-error').hidden = false;
+        input.setAttribute('aria-invalid', 'true');
+        history.replaceState(null, '', path + (rest ? '?' + rest : ''));
+      }
+      input.focus();
+    })();
+  </script>
+</body>
+</html>
